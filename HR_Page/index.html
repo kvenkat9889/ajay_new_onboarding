@@ -1,0 +1,1607 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Onboarding Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -100px;
+        }
+
+        .circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .circle:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            bottom: 100px;
+            right: 50px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .filters-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .left-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-dropdown {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background-color: white;
+            font-size: 0.9rem;
+            min-width: 180px;
+        }
+
+        .search-container {
+            position: relative;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            padding-left: 2.5rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 0.8rem center;
+            background-size: 1rem;
+        }
+
+        .employee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .employee-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+        }
+
+        .employee-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+
+        .profile-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #4f46e5;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-initials {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .employee-info {
+            flex-grow: 1;
+        }
+
+        .employee-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+            color: #111827;
+        }
+
+        .job-role {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            align-items: flex-start;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-weight: 500;
+            width: 120px;
+            flex-shrink: 0;
+            padding-right: 10px;
+        }
+
+        .info-value {
+            color: #111827;
+            flex-grow: 1;
+            word-break: break-word;
+            text-align: left;
+        }
+
+        .card-actions {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+
+        .email-value {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .experience-tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .experience-tag.fresher {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .experience-tag.experienced {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #4338ca;
+        }
+
+        .view-details {
+            background-color: transparent;
+            border: 1px solid #4f46e5;
+            color: #4f46e5;
+        }
+
+        .view-details:hover {
+            background-color: #f5f3ff;
+        }
+
+        .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(79, 70, 229, 0.2);
+            border-top-color: #4f46e5;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2rem auto;
+            max-width: 900px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            background-color: #4f46e5;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .modal-header-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .modal-header-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-header-initials {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            color: #4f46e5;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 0.5rem;
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal-section {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .modal-section h3 {
+            margin-bottom: 1rem;
+            color: #4f46e5;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+        }
+
+        .info-item strong {
+            display: block;
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .info-item span {
+            color: #111827;
+            font-size: 0.95rem;
+        }
+
+        .documents-section {
+            grid-column: 1 / -1;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .doc-btn {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .doc-btn h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+
+        .download-doc {
+            color: #4f46e5;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .download-doc:hover {
+            background-color: #f5f3ff;
+        }
+
+        .disabled {
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .modal-actions {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            text-align: right;
+        }
+
+        .sub-section {
+            margin-top: 1rem;
+            padding-left: 1rem;
+            border-left: 2px solid #4f46e5;
+        }
+
+        .sub-section h4 {
+            font-size: 1rem;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="banner-background">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+        <h1>Employee Onboarding Details</h1>
+        <p>Manage and access Employee Onboarding Details</p>
+    </header>
+
+    <div class="container">
+        <div class="filters-container">
+            <div class="left-filters">
+                <select class="filter-dropdown" id="monthFilter">
+                    <option value="">All Months</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                
+                <select class="filter-dropdown" id="experienceFilter">
+                    <option value="">All Experience Levels</option>
+                    <option value="Fresher">Fresher</option>
+                    <option value="Experienced">Experienced</option>
+                </select>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search employees...">
+            </div>
+        </div>
+        
+        <div class="employee-grid" id="employee-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading employee data...
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Detail Modal -->
+    <div class="modal" id="employeeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header-profile">
+                    <div class="modal-header-image" id="modalProfileImage">
+                        <div class="modal-header-initials" id="modalProfileInitials"></div>
+                    </div>
+                    <h2 id="modalEmployeeName"></h2>
+                </div>
+                <button class="close-modal" id="closeModal">×</button>
+            </div>
+
+            <div class="section-grid">
+                <div class="modal-section">
+                    <h3>Personal Information</h3>
+                    <div class="info-item">
+                        <strong>Full Name</strong>
+                        <span id="modalName"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Email Address</strong>
+                        <span id="modalEmail"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Mobile Number</strong>
+                        <span id="modalMobile"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Alternate Mobile</strong>
+                        <span id="modalAltMobile"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Date of Birth</strong>
+                        <span id="modalDob"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Gender</strong>
+                        <span id="modalGender"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Marital Status</strong>
+                        <span id="modalMaritalStatus"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Aadhaar Number</strong>
+                        <span id="modalAadhaar"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>PAN Number</strong>
+                        <span id="modalPan"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Terms Accepted</strong>
+                        <span id="modalTermsAccepted"></span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Employment Details</h3>
+                    <div class="info-item">
+                        <strong>Job Role</strong>
+                        <span id="modalJobRole"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Department</strong>
+                        <span id="modalDepartment"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Joining Date</strong>
+                        <span id="modalJoiningDate"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Experience Status</strong>
+                        <span id="modalExperience"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-grid">
+                <div class="modal-section">
+                    <h3>Address Information</h3>
+                    <div class="info-item">
+                        <strong>Address</strong>
+                        <span id="modalAddress"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>City</strong>
+                        <span id="modalCity"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>State</strong>
+                        <span id="modalState"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Zipcode</strong>
+                        <span id="modalZipcode"></span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Bank Details</h3>
+                    <div class="info-item">
+                        <strong>Bank Name</strong>
+                        <span id="modalBank"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Account Number</strong>
+                        <span id="modalAccount"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>IFSC Code</strong>
+                        <span id="modalIfsc"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Branch Location</strong>
+                        <span id="modalBankBranch"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-grid">
+                <div class="modal-section">
+                    <h3>Emergency Contact Details</h3>
+                    <div class="info-item">
+                        <strong>Primary Contact Name</strong>
+                        <span id="modalPrimaryContactName"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Primary Contact Mobile</strong>
+                        <span id="modalPrimaryContactMobile"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Primary Contact Relation</strong>
+                        <span id="modalPrimaryContactRelation"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Primary Contact Email</strong>
+                        <span id="modalPrimaryContactEmail"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Secondary Contact Name</strong>
+                        <span id="modalSecondaryContactName"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Secondary Contact Mobile</strong>
+                        <span id="modalSecondaryContactMobile"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Secondary Contact Relation</strong>
+                        <span id="modalSecondaryContactRelation"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Secondary Contact Email</strong>
+                        <span id="modalSecondaryContactEmail"></span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Previous Employments</h3>
+                    <div id="modalPreviousEmployments"></div>
+                </div>
+            </div>
+
+            <div class="section-grid">
+                <div class="modal-section">
+                    <h3>SSC Education</h3>
+                    <div class="info-item">
+                        <strong>School</strong>
+                        <span id="modalSscSchool"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Year</strong>
+                        <span id="modalSscYear"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Grade</strong>
+                        <span id="modalSscGrade"></span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Intermediate/Diploma</h3>
+                    <div class="info-item">
+                        <strong>College</strong>
+                        <span id="modalInterCollege"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Year</strong>
+                        <span id="modalInterYear"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Grade</strong>
+                        <span id="modalInterGrade"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Branch</strong>
+                        <span id="modalInterBranch"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-grid">
+                <div class="modal-section">
+                    <h3>Graduation Details</h3>
+                    <div class="info-item">
+                        <strong>University</strong>
+                        <span id="modalGradCollege"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Year</strong>
+                        <span id="modalGradYear"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Grade</strong>
+                        <span id="modalGradGrade"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Degree</strong>
+                        <span id="modalGradDegree"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Branch</strong>
+                        <span id="modalGradBranch"></span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Additional Educations</h3>
+                    <div id="modalAdditionalEducations"></div>
+                </div>
+            </div>
+
+            <div class="modal-section documents-section">
+                <h3>Documents</h3>
+                <div class="documents-grid" id="documentsGrid"></div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn" id="downloadPdfBtn">Export to PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script>
+        const { jsPDF } = window.jspdf;
+        let currentEmployee = null;
+        let allEmployees = [];
+
+        // Fetch all employees
+        fetch('http://localhost:3000/employees', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                allEmployees = data.data; // Adjust for server response structure
+                renderEmployeeGrid(allEmployees);
+                setupFilters();
+                setupSearch();
+            })
+            .catch(error => {
+                document.getElementById('employee-grid').innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        Error loading data: ${error.message}
+                    </div>`;
+                console.error('Error fetching employee data:', error);
+            });
+
+        // Modal elements
+        const modal = document.getElementById('employeeModal');
+        const closeModal = document.getElementById('closeModal');
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            // Clear modal content to prevent stale data
+            document.getElementById('modalProfileImage').innerHTML = '<div class="modal-header-initials" id="modalProfileInitials"></div>';
+            document.getElementById('modalPreviousEmployments').innerHTML = '';
+            document.getElementById('modalAdditionalEducations').innerHTML = '';
+            document.getElementById('documentsGrid').innerHTML = '';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.getElementById('modalProfileImage').innerHTML = '<div class="modal-header-initials" id="modalProfileInitials"></div>';
+                document.getElementById('modalPreviousEmployments').innerHTML = '';
+                document.getElementById('modalAdditionalEducations').innerHTML = '';
+                document.getElementById('documentsGrid').innerHTML = '';
+            }
+        });
+
+        // Event delegation for view-details buttons
+        document.getElementById('employee-grid').addEventListener('click', function(event) {
+            const button = event.target.closest('.view-details');
+            if (button) {
+                const employeeEmail = button.getAttribute('data-email');
+                const employee = allEmployees.find(emp => emp.emp_email === employeeEmail);
+                if (employee) {
+                    currentEmployee = employee;
+                    openEmployeeModal(employee);
+                }
+            }
+        });
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return 'N/A';
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function maskSensitive(value, showLast = 4) {
+            if (!value) return 'N/A';
+            const len = value.length;
+            if (len <= showLast) return value;
+            return '*'.repeat(len - showLast) + value.slice(-showLast);
+        }
+
+        function getInitials(name) {
+            if (!name) return '?';
+            const parts = name.split(' ');
+            let initials = parts[0].charAt(0).toUpperCase();
+            if (parts.length > 1) {
+                initials += parts[parts.length - 1].charAt(0).toUpperCase();
+            }
+            return initials;
+        }
+
+        function setupFilters() {
+            const monthFilter = document.getElementById('monthFilter');
+            const experienceFilter = document.getElementById('experienceFilter');
+            
+            monthFilter.addEventListener('change', filterEmployees);
+            experienceFilter.addEventListener('change', filterEmployees);
+        }
+
+        function filterEmployees() {
+            const monthFilter = document.getElementById('monthFilter').value;
+            const experienceFilter = document.getElementById('experienceFilter').value;
+            
+            let filtered = allEmployees;
+            
+            if (monthFilter) {
+                filtered = filtered.filter(emp => {
+                    if (!emp.emp_joining_date) return false;
+                    const joinMonth = emp.emp_joining_date.split('-')[1];
+                    return joinMonth === monthFilter;
+                });
+            }
+            
+            if (experienceFilter) {
+                filtered = filtered.filter(emp => {
+                    const totalYears = emp.previous_employments && emp.previous_employments.length > 0
+                        ? emp.previous_employments.reduce((sum, exp) => sum + (exp.years_of_experience || 0), 0)
+                        : 0;
+                    return experienceFilter === 'Fresher' ? totalYears === 0 : totalYears > 0;
+                });
+            }
+            
+            renderEmployeeGrid(filtered);
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                if (searchTerm.length === 0) {
+                    filterEmployees();
+                    return;
+                }
+                
+                const filtered = allEmployees.filter(emp => 
+                    (emp.emp_name && emp.emp_name.toLowerCase().includes(searchTerm)) ||
+                    (emp.emp_email && emp.emp_email.toLowerCase().includes(searchTerm)) ||
+                    (emp.emp_job_role && emp.emp_job_role.toLowerCase().includes(searchTerm)) ||
+                    (emp.emp_department && emp.emp_department.toLowerCase().includes(searchTerm)) ||
+                    (emp.emp_mobile && emp.emp_mobile.toLowerCase().includes(searchTerm)) ||
+                    (emp.emp_alt_mobile && emp.emp_alt_mobile.toLowerCase().includes(searchTerm)) ||
+                    (emp.primary_contact_name && emp.primary_contact_name.toLowerCase().includes(searchTerm)) ||
+                    (emp.primary_contact_mobile && emp.primary_contact_mobile.toLowerCase().includes(searchTerm)) ||
+                    (emp.primary_contact_email && emp.primary_contact_email.toLowerCase().includes(searchTerm)) ||
+                    (emp.secondary_contact_name && emp.secondary_contact_name.toLowerCase().includes(searchTerm)) ||
+                    (emp.secondary_contact_mobile && emp.secondary_contact_mobile.toLowerCase().includes(searchTerm)) ||
+                    (emp.secondary_contact_email && emp.secondary_contact_email.toLowerCase().includes(searchTerm)) ||
+                    (emp.ssc_school && emp.ssc_school.toLowerCase().includes(searchTerm)) ||
+                    (emp.inter_college && emp.inter_college.toLowerCase().includes(searchTerm)) ||
+                    (emp.grad_college && emp.grad_college.toLowerCase().includes(searchTerm)) ||
+                    (emp.previous_employments && emp.previous_employments.some(exp => 
+                        exp.company_name && exp.company_name.toLowerCase().includes(searchTerm) ||
+                        exp.uan && exp.uan.toLowerCase().includes(searchTerm) ||
+                        exp.pf && exp.pf.toLowerCase().includes(searchTerm))) ||
+                    (emp.additional_educations && emp.additional_educations.some(edu => 
+                        edu.college_name && edu.college_name.toLowerCase().includes(searchTerm) ||
+                        edu.degree && edu.degree.toLowerCase().includes(searchTerm) ||
+                        edu.branch && edu.branch.toLowerCase().includes(searchTerm)))
+                );
+                
+                renderEmployeeGrid(filtered);
+            });
+        }
+
+        async function downloadDocument(docUrl) {
+            try {
+                if (!docUrl) {
+                    alert('Document not available');
+                    return;
+                }
+                const filename = docUrl.split('/').pop() || 'document';
+                if (!filename) {
+                    throw new Error('Could not extract filename from document URL');
+                }
+                const downloadUrl = `http://localhost:3000/download/${filename}`;
+                window.open(downloadUrl, '_blank');
+            } catch (error) {
+                console.error('Download error:', error);
+                alert(`Download failed: ${error.message}`);
+            }
+        }
+
+        function renderEmployeeGrid(employees) {
+            const employeeGrid = document.getElementById('employee-grid');
+            employeeGrid.innerHTML = '';
+
+            if (employees.length === 0) {
+                employeeGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="No data" style="width: 150px; opacity: 0.6; margin-bottom: 1rem;" />
+                        <div style="font-size: 1.2rem; color: #555;">No employee records found matching your criteria</div>
+                    </div>`;
+                return;
+            }
+
+            employees.forEach(employee => {
+                const card = document.createElement('div');
+                card.className = 'employee-card';
+
+                let experienceStatus;
+                const totalYears = employee.previous_employments && employee.previous_employments.length > 0
+                    ? employee.previous_employments.reduce((sum, exp) => sum + (exp.years_of_experience || 0), 0)
+                    : 0;
+                if (totalYears > 0) {
+                    experienceStatus = `<span class="experience-tag experienced">${totalYears} yrs experience</span>`;
+                } else {
+                    experienceStatus = `<span class="experience-tag fresher">Fresher</span>`;
+                }
+
+                // Normalize profile picture URL
+                let profilePicUrl = employee.emp_profile_pic_url;
+                if (profilePicUrl && !profilePicUrl.startsWith('http')) {
+                    profilePicUrl = `http://localhost:3000/${profilePicUrl.startsWith('/') ? profilePicUrl.slice(1) : profilePicUrl}`;
+                }
+
+                // Log profile picture URL for debugging
+                console.log(`Profile picture URL for ${employee.emp_name}: ${profilePicUrl || 'No URL provided'}`);
+
+                // Create profile image container
+                const profileImageDiv = document.createElement('div');
+                profileImageDiv.className = 'profile-image';
+                
+                // Create initials div
+                const initialsDiv = document.createElement('div');
+                initialsDiv.className = 'profile-initials';
+                initialsDiv.textContent = getInitials(employee.emp_name);
+                profileImageDiv.appendChild(initialsDiv);
+
+                // Add profile image if URL exists
+                if (profilePicUrl) {
+                    const img = document.createElement('img');
+                    img.src = profilePicUrl;
+                    img.alt = employee.emp_name || 'Profile';
+                    img.onload = () => {
+                        console.log(`Image loaded successfully for ${employee.emp_name} at ${profilePicUrl}`);
+                        img.style.display = 'block';
+                        initialsDiv.style.display = 'none';
+                    };
+                    img.onerror = () => {
+                        console.error(`Failed to load image for ${employee.emp_name}: ${profilePicUrl}`);
+                        img.style.display = 'none';
+                        initialsDiv.style.display = 'flex';
+                    };
+                    profileImageDiv.appendChild(img);
+                } else {
+                    console.log(`No profile picture URL provided for ${employee.emp_name}`);
+                    initialsDiv.style.display = 'flex'; // Ensure initials are shown if no image
+                }
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        ${profileImageDiv.outerHTML}
+                        <div class="employee-info">
+                            <h3 style="font-weight: bold;">${employee.emp_name}</h3>
+                            <div class="job-role">${employee.emp_job_role || 'Not specified'}</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row">
+                            <span class="info-label">Joining Date</span>
+                            <span class="info-value">${formatDate(employee.emp_joining_date)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Contact</span>
+                            <span class="info-value">${employee.emp_mobile || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Gender</span>
+                            <span class="info-value">${employee.emp_gender || 'N/A'}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Email</span>
+                            <span class="info-value email-value">${employee.emp_email}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Status</span>
+                            <span class="info-value">${experienceStatus}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn view-details" data-email="${employee.emp_email}">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                employeeGrid.appendChild(card);
+            });
+        }
+
+        async function openEmployeeModal(employee) {
+            if (!employee) return;
+
+            function setTextContent(elementId, text) {
+                const element = document.getElementById(elementId);
+                if (element) element.textContent = text || 'N/A';
+            }
+
+            const modalProfileImage = document.getElementById('modalProfileImage');
+            const modalProfileInitials = document.getElementById('modalProfileInitials');
+            const modalEmployeeName = document.getElementById('modalEmployeeName');
+
+            if (modalProfileImage) {
+                modalProfileImage.innerHTML = '';
+                modalProfileInitials.textContent = getInitials(employee.emp_name);
+                modalProfileInitials.style.display = 'flex';
+            }
+
+            if (employee.emp_profile_pic_url && modalProfileImage) {
+                const img = document.createElement('img');
+                img.src = employee.emp_profile_pic_url;
+                img.alt = employee.emp_name;
+                img.onerror = () => {
+                    img.style.display = 'none';
+                    modalProfileInitials.style.display = 'flex';
+                };
+                img.onload = () => {
+                    modalProfileInitials.style.display = 'none';
+                };
+                modalProfileImage.appendChild(img);
+            }
+
+            if (modalEmployeeName) {
+                modalEmployeeName.textContent = employee.emp_name || 'N/A';
+            }
+
+            setTextContent('modalName', employee.emp_name);
+            setTextContent('modalEmail', employee.emp_email);
+            setTextContent('modalMobile', employee.emp_mobile);
+            setTextContent('modalAltMobile', employee.emp_alt_mobile);
+            setTextContent('modalDob', formatDate(employee.emp_dob));
+            setTextContent('modalGender', employee.emp_gender);
+            setTextContent('modalMaritalStatus', employee.emp_marital_status);
+            setTextContent('modalAadhaar', maskSensitive(employee.emp_aadhaar));
+            setTextContent('modalPan', maskSensitive(employee.emp_pan));
+            setTextContent('modalTermsAccepted', employee.emp_terms_accepted ? 'Yes' : 'No');
+            setTextContent('modalJobRole', employee.emp_job_role);
+            setTextContent('modalDepartment', employee.emp_department);
+            setTextContent('modalJoiningDate', formatDate(employee.emp_joining_date));
+            
+            const totalYears = employee.previous_employments && employee.previous_employments.length > 0
+                ? employee.previous_employments.reduce((sum, exp) => sum + (exp.years_of_experience || 0), 0)
+                : 0;
+            setTextContent('modalExperience', totalYears > 0 ? `${totalYears} yrs experience` : 'Fresher');
+
+            setTextContent('modalAddress', employee.emp_address);
+            setTextContent('modalCity', employee.emp_city);
+            setTextContent('modalState', employee.emp_state);
+            setTextContent('modalZipcode', employee.emp_zipcode);
+            setTextContent('modalBank', employee.emp_bank);
+            setTextContent('modalAccount', maskSensitive(employee.emp_account));
+            setTextContent('modalIfsc', employee.emp_ifsc);
+            setTextContent('modalBankBranch', employee.emp_bank_branch);
+            setTextContent('modalSscSchool', employee.ssc_school);
+            setTextContent('modalSscYear', employee.ssc_year);
+            setTextContent('modalSscGrade', employee.ssc_grade);
+            setTextContent('modalInterCollege', employee.inter_college);
+            setTextContent('modalInterYear', employee.inter_year);
+            setTextContent('modalInterGrade', employee.inter_grade);
+            setTextContent('modalInterBranch', employee.inter_branch);
+            setTextContent('modalGradCollege', employee.grad_college);
+            setTextContent('modalGradYear', employee.grad_year);
+            setTextContent('modalGradGrade', employee.grad_grade);
+            setTextContent('modalGradDegree', employee.grad_degree);
+            setTextContent('modalGradBranch', employee.grad_branch);
+            setTextContent('modalPrimaryContactName', employee.primary_contact_name);
+            setTextContent('modalPrimaryContactMobile', employee.primary_contact_mobile);
+            setTextContent('modalPrimaryContactRelation', employee.primary_contact_relation);
+            setTextContent('modalPrimaryContactEmail', employee.primary_contact_email);
+            setTextContent('modalSecondaryContactName', employee.secondary_contact_name);
+            setTextContent('modalSecondaryContactMobile', employee.secondary_contact_mobile);
+            setTextContent('modalSecondaryContactRelation', employee.secondary_contact_relation);
+            setTextContent('modalSecondaryContactEmail', employee.secondary_contact_email);
+
+            const previousEmploymentsDiv = document.getElementById('modalPreviousEmployments');
+            if (previousEmploymentsDiv) {
+                previousEmploymentsDiv.innerHTML = '';
+                if (employee.previous_employments && employee.previous_employments.length > 0) {
+                    employee.previous_employments.forEach((exp, index) => {
+                        const expDiv = document.createElement('div');
+                        expDiv.className = 'sub-section';
+                        expDiv.innerHTML = `
+                            <h4>Employment ${index + 1}</h4>
+                            <div class="info-item">
+                                <strong>Company Name</strong>
+                                <span>${exp.company_name || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Years of Experience</strong>
+                                <span>${exp.years_of_experience || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Start Date</strong>
+                                <span>${formatDate(exp.start_date)}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>End Date</strong>
+                                <span>${formatDate(exp.end_date)}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>UAN</strong>
+                                <span>${exp.uan || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>PF Number</strong>
+                                <span>${exp.pf || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Offer Letter</strong>
+                                <span>${exp.offer_letter_url ? `<a href="#" class="download-doc" data-url="${exp.offer_letter_url}">Download</a>` : 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Relieving Letter</strong>
+                                <span>${exp.relieving_letter_url ? `<a href="#" class="download-doc" data-url="${exp.relieving_letter_url}">Download</a>` : 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Experience Certificate</strong>
+                                <span>${exp.experience_certificate_url ? `<a href="#" class="download-doc" data-url="${exp.experience_certificate_url}">Download</a>` : 'N/A'}</span>
+                            </div>
+                        `;
+                        previousEmploymentsDiv.appendChild(expDiv);
+                    });
+                } else {
+                    previousEmploymentsDiv.innerHTML = '<div class="info-item"><span>No previous employments</span></div>';
+                }
+            }
+
+            const additionalEducationsDiv = document.getElementById('modalAdditionalEducations');
+            if (additionalEducationsDiv) {
+                additionalEducationsDiv.innerHTML = '';
+                if (employee.additional_educations && employee.additional_educations.length > 0) {
+                    employee.additional_educations.forEach((edu, index) => {
+                        const eduDiv = document.createElement('div');
+                        eduDiv.className = 'sub-section';
+                        eduDiv.innerHTML = `
+                            <h4>Education ${index + 1}</h4>
+                            <div class="info-item">
+                                <strong>College Name</strong>
+                                <span>${edu.college_name || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Year of Completion</strong>
+                                <span>${edu.year_of_completion || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Grade</strong>
+                                <span>${edu.grade || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Degree</strong>
+                                <span>${edu.degree || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Branch</strong>
+                                <span>${edu.branch || 'N/A'}</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Certificate</strong>
+                                <span>${edu.certificate_url ? `<a href="#" class="download-doc" data-url="${edu.certificate_url}">Download</a>` : 'N/A'}</span>
+                            </div>
+                        `;
+                        additionalEducationsDiv.appendChild(eduDiv);
+                    });
+                } else {
+                    additionalEducationsDiv.innerHTML = '<div class="info-item"><span>No additional educations</span></div>';
+                }
+            }
+
+            const documentsGrid = document.getElementById('documentsGrid');
+            if (documentsGrid) {
+                documentsGrid.innerHTML = '<div class="loading"><div class="spinner"></div>Loading documents...</div>';
+                try {
+                    const response = await fetch('http://localhost:3000/get-documents', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ empEmail: employee.emp_email })
+                    });
+                    if (!response.ok) throw new Error('Failed to fetch documents');
+                    const data = await response.json();
+                    const documents = data.data || {};
+
+                    documentsGrid.innerHTML = '';
+                    Object.entries(documents).forEach(([key, doc]) => {
+                        const docElement = document.createElement('div');
+                        docElement.className = 'doc-btn';
+                        docElement.innerHTML = `
+                            <h4>${doc.name}</h4>
+                            <a href="#" class="download-doc" data-url="${doc.url}">Download</a>
+                        `;
+                        documentsGrid.appendChild(docElement);
+                    });
+
+                    if (Object.keys(documents).length === 0) {
+                        documentsGrid.innerHTML = '<div class="info-item"><span>No documents available</span></div>';
+                    }
+
+                    document.querySelectorAll('.download-doc').forEach(link => {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const docUrl = this.getAttribute('data-url');
+                            if (docUrl) downloadDocument(docUrl);
+                        });
+                    });
+                } catch (error) {
+                    console.error('Error fetching documents:', error);
+                    documentsGrid.innerHTML = '<div class="info-item"><span>Error loading documents</span></div>';
+                }
+            }
+
+            const pdfBtn = document.getElementById('downloadPdfBtn');
+            if (pdfBtn) {
+                pdfBtn.onclick = () => generateEmployeePDF(employee);
+            }
+
+            if (modal) modal.style.display = 'block';
+        }
+
+        function generateEmployeePDF(employee) {
+            if (!employee) return;
+
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm'
+            });
+
+            doc.setFont('helvetica', 'bold');
+
+            doc.setFontSize(23);
+            doc.setTextColor(74, 31, 5);
+            doc.text(employee.emp_name || 'Employee Profile', 105, 15, { align: 'center' });
+            doc.setFontSize(10);
+            doc.text(`ID: ${employee.id}`, 105, 20, { align: 'center' });
+            doc.line(20, 22, 190, 22);
+
+            const blueColor = [13, 0, 255];
+            const bodyStyle = {
+                fontSize: 10,
+                cellPadding: 3,
+                overflow: 'linebreak',
+                minCellHeight: 6
+            };
+
+            const headerStyle = {
+                fillColor: blueColor,
+                textColor: [255, 255, 255],
+                halign: 'center',
+                valign: 'middle',
+                fontStyle: 'bold',
+                fontSize: 12,
+                cellPadding: 4
+            };
+
+            const loadProfileImage = new Promise((resolve) => {
+                if (employee.emp_profile_pic_url) {
+                    const img = new Image();
+                    img.crossOrigin = 'Anonymous';
+                    img.src = employee.emp_profile_pic_url;
+                    img.onload = function() {
+                        resolve(img);
+                    };
+                    img.onerror = function() {
+                        console.error("Error loading profile image for PDF");
+                        resolve(null);
+                    };
+                } else {
+                    resolve(null);
+                }
+            });
+
+            function getInitials(name) {
+                if (!name) return 'NA';
+                const parts = name.split(' ');
+                return parts.map(p => p.charAt(0).toUpperCase()).join('');
+            }
+
+            loadProfileImage.then(async (img) => {
+                let startY = 30;
+
+                const personalDetails = [
+                    ['Name:', employee.emp_name || 'N/A'],
+                    ['Email:', employee.emp_email || 'N/A'],
+                    ['Mobile:', employee.emp_mobile || 'N/A'],
+                    ['Alternate Mobile:', employee.emp_alt_mobile || 'N/A'],
+                    ['Gender:', employee.emp_gender || 'N/A'],
+                    ['Marital Status:', employee.emp_marital_status || 'N/A'],
+                    ['DOB:', formatDate(employee.emp_dob)],
+                    ['Aadhaar:', maskSensitive(employee.emp_aadhaar)],
+                    ['PAN:', maskSensitive(employee.emp_pan)],
+                    ['Terms Accepted:', employee.emp_terms_accepted ? 'Yes' : 'No']
+                ];
+
+                doc.autoTable({
+                    startY,
+                    margin: { left: 14 },
+                    tableWidth: 110,
+                    body: personalDetails,
+                    styles: bodyStyle,
+                    headStyles: headerStyle,
+                    columnStyles: {
+                        0: { fontStyle: 'bold', cellWidth: 40 },
+                        1: { cellWidth: 'auto' }
+                    },
+                    theme: 'grid'
+                });
+
+                const personalTableEndY = doc.lastAutoTable.finalY;
+
+                if (img) {
+                    const ratio = img.height / img.width;
+                    const imgWidth = 40;
+                    const imgHeight = imgWidth * ratio;
+                    const imageX = 140;
+                    const imageY = startY + 5;
+                    doc.addImage(img, 'JPEG', imageX, imageY, imgWidth, imgHeight);
+                } else {
+                    doc.setFillColor(200, 200, 200);
+                    doc.circle(160, startY + 20, 20, 'F');
+                    doc.setFontSize(14);
+                    doc.setTextColor(100, 100, 100);
+                    doc.text(getInitials(employee.emp_name), 160, startY + 24, { align: 'center' });
+                }
+
+                startY = personalTableEndY + 15;
+
+                const createFullWidthTable = (title, body) => {
+                    doc.setFontSize(12);
+                    doc.setFillColor(...blueColor);
+                    doc.setTextColor(255, 255, 255);
+                    doc.rect(14, startY - 5, 182, 8, 'F');
+                    doc.text(title, 105, startY, { align: 'center' });
+
+                    doc.autoTable({
+                        startY: startY + 5,
+                        margin: { left: 14, right: 14 },
+                        tableWidth: 182,
+                        body: body,
+                        styles: bodyStyle,
+                        headStyles: headerStyle,
+                        columnStyles: {
+                            0: { fontStyle: 'bold', cellWidth: 50 },
+                            1: { cellWidth: 'auto' }
+                        },
+                        theme: 'grid'
+                    });
+
+                    startY = doc.lastAutoTable.finalY + 15;
+                };
+
+                const totalYears = employee.previous_employments && employee.previous_employments.length > 0
+                    ? employee.previous_employments.reduce((sum, exp) => sum + (exp.years_of_experience || 0), 0)
+                    : 0;
+                createFullWidthTable('Employment Details', [
+                    ['Job Role:', employee.emp_job_role || 'N/A'],
+                    ['Department:', employee.emp_department || 'N/A'],
+                    ['Joining Date:', formatDate(employee.emp_joining_date)],
+                    ['Experience Status:', totalYears > 0 ? `${totalYears} yrs experience` : 'Fresher']
+                ]);
+
+                createFullWidthTable('Address Information', [
+                    ['Address:', employee.emp_address || 'N/A'],
+                    ['City:', employee.emp_city || 'N/A'],
+                    ['State:', employee.emp_state || 'N/A'],
+                    ['Zipcode:', employee.emp_zipcode || 'N/A']
+                ]);
+
+                createFullWidthTable('Bank Details', [
+                    ['Bank Name:', employee.emp_bank || 'N/A'],
+                    ['Account No:', maskSensitive(employee.emp_account) || 'N/A'],
+                    ['IFSC Code:', employee.emp_ifsc || 'N/A'],
+                    ['Branch:', employee.emp_bank_branch || 'N/A']
+                ]);
+
+                createFullWidthTable('Emergency Contact Details', [
+                    ['Primary Contact Name:', employee.primary_contact_name || 'N/A'],
+                    ['Primary Contact Mobile:', employee.primary_contact_mobile || 'N/A'],
+                    ['Primary Contact Relation:', employee.primary_contact_relation || 'N/A'],
+                    ['Primary Contact Email:', employee.primary_contact_email || 'N/A'],
+                    ['Secondary Contact Name:', employee.secondary_contact_name || 'N/A'],
+                    ['Secondary Contact Mobile:', employee.secondary_contact_mobile || 'N/A'],
+                    ['Secondary Contact Relation:', employee.secondary_contact_relation || 'N/A'],
+                    ['Secondary Contact Email:', employee.secondary_contact_email || 'N/A']
+                ]);
+
+                if (employee.previous_employments && employee.previous_employments.length > 0) {
+                    employee.previous_employments.forEach((exp, index) => {
+                        createFullWidthTable(`Previous Employment ${index + 1}`, [
+                            ['Company Name:', exp.company_name || 'N/A'],
+                            ['Years of Experience:', exp.years_of_experience || 'N/A'],
+                            ['Start Date:', formatDate(exp.start_date)],
+                            ['End Date:', formatDate(exp.end_date)],
+                            ['UAN:', exp.uan || 'N/A'],
+                            ['PF Number:', exp.pf || 'N/A']
+                        ]);
+                    });
+                } else {
+                    createFullWidthTable('Previous Employments', [
+                        ['Status:', 'No previous employments']
+                    ]);
+                }
+
+                createFullWidthTable('SSC Education', [
+                    ['School:', employee.ssc_school || 'N/A'],
+                    ['Year:', employee.ssc_year || 'N/A'],
+                    ['Grade:', employee.ssc_grade || 'N/A']
+                ]);
+
+                createFullWidthTable('Intermediate/Diploma Education', [
+                    ['College:', employee.inter_college || 'N/A'],
+                    ['Year:', employee.inter_year || 'N/A'],
+                    ['Grade:', employee.inter_grade || 'N/A'],
+                    ['Branch:', employee.inter_branch || 'N/A']
+                ]);
+
+                createFullWidthTable('Graduation Details', [
+                    ['University:', employee.grad_college || 'N/A'],
+                    ['Year:', employee.grad_year || 'N/A'],
+                    ['Grade:', employee.grad_grade || 'N/A'],
+                    ['Degree:', employee.grad_degree || 'N/A'],
+                    ['Branch:', employee.grad_branch || 'N/A']
+                ]);
+
+                if (employee.additional_educations && employee.additional_educations.length > 0) {
+                    employee.additional_educations.forEach((edu, index) => {
+                        createFullWidthTable(`Additional Education ${index + 1}`, [
+                            ['College Name:', edu.college_name || 'N/A'],
+                            ['Year of Completion:', edu.year_of_completion || 'N/A'],
+                            ['Grade:', edu.grade || 'N/A'],
+                            ['Degree:', edu.degree || 'N/A'],
+                            ['Branch:', edu.branch || 'N/A']
+                        ]);
+                    });
+                } else {
+                    createFullWidthTable('Additional Educations', [
+                        ['Status:', 'No additional educations']
+                    ]);
+                }
+
+                // Fetch documents for PDF
+                let documents = [];
+                try {
+                    const response = await fetch('http://localhost:3000/get-documents', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ empEmail: employee.emp_email })
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        documents = Object.entries(data.data || {}).map(([key, doc]) => [
+                            doc.name,
+                            doc.url ? 'Available' : 'Not Available'
+                        ]);
+                    }
+                } catch (error) {
+                    console.error('Error fetching documents for PDF:', error);
+                    documents.push(['Error:', 'Could not load documents']);
+                }
+
+                doc.setFontSize(12);
+                doc.setFillColor(...blueColor);
+                doc.setTextColor(255, 255, 255);
+                doc.rect(14, startY - 5, 182, 8, 'F');
+                doc.text('Documents', 105, startY, { align: 'center' });
+
+                doc.autoTable({
+                    startY: startY + 5,
+                    margin: { left: 14, right: 14 },
+                    tableWidth: 182,
+                    body: documents.length > 0 ? documents : [['Status:', 'No documents available']],
+                    styles: bodyStyle,
+                    headStyles: headerStyle,
+                    columnStyles: {
+                        0: { fontStyle: 'bold', cellWidth: 80 },
+                        1: { halign: 'center', cellWidth: 'auto' }
+                    },
+                    theme: 'grid',
+                    willDrawCell: (data) => {
+                        if (data.section === 'body' && data.column.index === 1) {
+                            if (data.cell.raw === 'Available') {
+                                data.cell.styles.fillColor = [220, 252, 231];
+                                data.cell.styles.textColor = [22, 101, 52];
+                            } else {
+                                data.cell.styles.fillColor = [254, 226, 226];
+                                data.cell.styles.textColor = [153, 27, 27];
+                            }
+                        }
+                    }
+                });
+
+                const footerY = doc.internal.pageSize.height - 15;
+                doc.setFontSize(8);
+                doc.setTextColor(150, 150, 150);
+                doc.text('Generated by Astrolite Tech Solutions', 105, footerY, { align: 'center' });
+                doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, footerY + 5, { align: 'center' });
+
+                doc.save(`Employee_${employee.emp_name.replace(/\s+/g, '_')}_Profile.pdf`);
+            });
+        }
+    </script>
+</body>
+</html>

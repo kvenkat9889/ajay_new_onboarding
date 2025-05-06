@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Onboarding</title>
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #0900ad;
+            --accent-color: #e74c3c;
+            --light-gray: #ffffff;
+            --dark-gray: #000000;
+            --border-color: #949393;
+            --success-color: #8a0e81;
+            --danger-color: #6b21b0;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #212529;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: var(--dark-gray);
+            font-size: 1.05rem;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: white;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+
+        .form-col {
+            flex: 1;
+            min-width: 200px;
+            padding: 0 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .required:after {
+            content: " *";
+            color: red;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgb(139, 0, 181);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            border-radius: 4px;
+            font-size: 15px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            background-color: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        input[readonly] {
+            background-color: #ffffff;
+            cursor: not-allowed;
+        }
+
+        select:invalid {
+            color: #999;
+        }
+
+        select option {
+            color: #000;
+        }
+
+        select option:disabled {
+            color: #999;
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .radio-group label, .checkbox-group label {
+            margin: 0 0 0 10px;
+            font-weight: normal;
+        }
+
+        .radio-group input, .checkbox-group input {
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 14px;
+        }
+
+        .experience-item, .education-item, .certification-item {
+            background: var(--light-gray);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .document-upload {
+            border: 2px dashed var(--border-color);
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .document-upload:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .document-upload p {
+            margin: 10px 0 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .signature-upload {
+            border: 1px solid var(--border-color);
+            background: white;
+            padding: 20px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .form-note {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .input-banner {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .current-job-toggle {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .current-job-toggle label {
+            margin-left: 8px;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        .valid {
+            border-color: #28a745 !important;
+        }
+
+        .invalid {
+            border-color: #dc3545 !important;
+        }
+
+        .validation-message {
+            font-size: 0.8rem;
+            color: #dc3545;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .validation-message.visible {
+            display: block;
+        }
+
+        .checkbox-group.invalid label:after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-col {
+                flex: 100%;
+                margin-bottom: 15px;
+                padding: 0;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+        }
+
+        .error-summary {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-summary.visible {
+            display: block;
+        }
+
+        .error-summary ul {
+            margin: 10px 0 0;
+            padding-left: 20px;
+        }
+
+        #submitBtn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .invalid {
+    border: 1px solid red !important;
+}
+.valid {
+    border: 1px solid green !important;
+}
+.validation-message {
+    display: none;
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+.validation-message.visible {
+    display: block;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 style="color: blue;">Employee Onboarding Form</h1>
+            <p>Please complete all sections of this form to finalize your onboarding process</p>
+        </div>
+
+        <div id="errorSummary" class="error-summary">
+            <p>Please correct the following errors:</p>
+            <ul id="errorList"></ul>
+        </div>
+
+        <form id="onboardingForm" enctype="multipart/form-data">
+            <!-- Personal Information -->
+            <div class="form-section">
+                <h3 class="section-title">Personal Information</h3>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_name" class="required">Full Name</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_name" name="emp_name" placeholder="Full Name" required maxlength="60" minlength="3">
+                            <div id="emp_name-error" class="validation-message">Name must be 3-60 alphabetic characters with single spaces</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_email" class="required">Email Address</label>
+                        <div class="form-group">
+                            <input type="email" id="emp_email" name="emp_email" placeholder="Email Address" required minlength="5" maxlength="60">
+                            <div id="emp_email-error" class="validation-message">Please enter a valid email address</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_dob" class="required">Date of Birth</label>
+                        <div class="form-group">
+                            <input type="date" id="emp_dob" name="emp_dob" required>
+                            <div id="emp_dob-error" class="validation-message">Employee must be at least 20 years old</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_mobile" class="required">Mobile Number</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_mobile" placeholder="Mobile Number" name="emp_mobile" required maxlength="10">
+                            <div id="emp_mobile-error" class="validation-message"></div>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_alt_mobile">Alternate Mobile Number</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_alt_mobile" placeholder="Alternative Mobile Number" name="emp_alt_mobile" maxlength="10">
+                            <div id="emp_alt_mobile-error" class="validation-message"></div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_gender" class="required">Gender</label>
+                        <div class="form-group">
+                            <select id="emp_gender" name="emp_gender" required>
+                                <option value="" disabled selected>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div id="emp_gender-error" class="validation-message">Please select a gender</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_marital_status" class="required">Marital Status</label>
+                        <div class="form-group">
+                            <select id="emp_marital_status" name="emp_marital_status" required>
+                                <option value="" disabled selected>Select Marital Status</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                                <option value="Widowed">Widowed</option>
+                            </select>
+                            <div id="emp_marital-error" class="validation-message">Please select a marital status</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_profile_pic" class="required">Profile Picture</label>
+                        <div class="form-group">
+                            <input type="file" id="emp_profile_pic" name="emp_profile_pic" accept=".jpg, .png" required>
+                            <div id="emp_profile-pic-error" class="validation-message">Please upload a profile picture (JPG/PNG, max 2MB)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_aadhaar" class="required">Aadhaar Number</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_aadhaar" name="emp_aadhaar" placeholder="Aadhaar Number" required minlength="12" maxlength="12">
+                            <div id="emp_aadhaar-error" class="validation-message">Aadhaar must be exactly 12 digits</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_pan" class="required">PAN Card Number</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_pan" name="emp_pan" placeholder="PAN Card Number" required minlength="10" maxlength="10">
+                            <div id="emp_pan-error" class="validation-message">PAN must be 10 alphanumeric characters (e.g., ABCDE1234F)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Details -->
+            <div class="form-section">
+                <h3 class="section-title">Emergency Contact Details</h3>
+                <h4>Primary Emergency Contact</h4>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="primary_contact_name" class="required">Contact Name</label>
+                        <div class="form-group">
+                            <input type="text" id="primary_contact_name" name="primary_contact_name" placeholder="Contact Name" required minlength="3" maxlength="60">
+                            <div id="primary-contact-name-error" class="validation-message">Name must be 3-60 alphabetic characters with single spaces</div>
+                        </div>
+                    </div>
+                  
+                    <div class="form-col">
+                        <label for="primary_contact_mobile" class="required">Primary Contact Mobile</label>
+                        <div class="form-group">
+                            <input type="tel" id="primary_contact_mobile" name="primary_contact_mobile" placeholder="Mobile Number" required maxlength="10">
+                            <div id="primary_contact_mobile-error" class="validation-message"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="primary_contact_relation" class="required">Relation</label>
+                        <div class="form-group">
+                            <select id="primary_contact_relation" name="primary_contact_relation" required>
+                                <option value="" disabled selected>Select Relation</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Sibling">Sibling</option>
+                                <option value="Friend">Friend</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div id="primary-contact-relation-error" class="validation-message">Please select a relation</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="primary_contact_email">Email Address</label>
+                        <div class="form-group">
+                            <input type="email" id="primary_contact_email" name="primary_contact_email" placeholder="Email Address" minlength="5" maxlength="60">
+                            <div id="primary-contact-email-error" class="validation-message">Please enter a valid email address</div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <h4>Secondary Emergency Contact (Optional)</h4>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="secondary_contact_name">Contact Name</label>
+                        <div class="form-group">
+                            <input type="text" id="secondary_contact_name" name="secondary_contact_name" placeholder="Contact Name" minlength="3" maxlength="60">
+                            <div id="secondary-contact-name-error" class="validation-message">Name must be 3-60 alphabetic characters with single spaces</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="secondary_contact_mobile">Secondary Contact Mobile</label>
+                        <div class="form-group">
+                            <input type="text" id="secondary_contact_mobile" name="secondary_contact_mobile" placeholder="Mobile Number" maxlength="10">
+                            <div id="secondary_contact_mobile-error" class="validation-message"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="secondary_contact_relation">Relation</label>
+                        <div class="form-group">
+                            <select id="secondary_contact_relation" name="secondary_contact_relation">
+                                <option value="" disabled selected>Select Relation</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Sibling">Sibling</option>
+                                <option value="Friend">Friend</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div id="secondary-contact-relation-error" class="validation-message">Please select a relation</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="secondary_contact_email">Email Address</label>
+                        <div class="form-group">
+                            <input type="email" id="secondary_contact_email" name="secondary_contact_email" placeholder="Email Address" minlength="5" maxlength="60">
+                            <div id="secondary-contact-email-error" class="validation-message">Please enter a valid email address</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="form-section">
+                <h3 class="section-title">Address Information</h3>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_address" class="required">Street Address</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_address" name="emp_address" placeholder="Street Address" required minlength="5" maxlength="80">
+                            <div id="emp_address-error" class="validation-message">Address must be 5-80 characters</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_city" class="required">City</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_city" name="emp_city" placeholder="City" required minlength="3" maxlength="60">
+                            <div id="emp_city-error" class="validation-message">Please enter a valid city name</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_state" class="required">State</label>
+                        <div class="form-group">
+                            <select id="emp_state" name="emp_state" required>
+                                <option value="" disabled selected>Select State</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Puducherry">Puducherry</option>
+                            </select>
+                            <div id="emp_state-error" class="validation-message">Please select a state</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_zipcode" class="required">Zip/Postal Code</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_zipcode" name="emp_zipcode" placeholder="Zip/Postal Code" required minlength="6" maxlength="6">
+                            <div id="emp_zipcode-error" class="validation-message">Please enter a valid 6-digit zip code</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bank Details -->
+            <div class="form-section">
+                <h3 class="section-title">Bank Details</h3>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_bank" class="required">Bank Name</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_bank" name="emp_bank" placeholder="Bank Name" required minlength="3" maxlength="60">
+                            <div id="emp_bank-error" class="validation-message">Please enter a valid bank name</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_account" class="required">Account Number</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_account" name="emp_account" placeholder="Account Number" required minlength="9" maxlength="18">
+                            <div id="emp_account-error" class="validation-message">Account number must be 9-18 digits</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_ifsc" class="required">IFSC Code</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_ifsc" name="emp_ifsc" placeholder="IFSC Code" required minlength="11" maxlength="11">
+                            <div id="emp_ifsc-error" class="validation-message">Please enter a valid IFSC code (e.g. ABCD0123456)</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_bank_branch" class="required">Branch Location</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_bank_branch" name="emp_bank_branch" placeholder="Branch Location" required minlength="3" maxlength="60">
+                            <div id="emp_bank-branch-error" class="validation-message">Please enter a valid branch location</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employment Details -->
+            <div class="form-section">
+                <h3 class="section-title">Employment Details</h3>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_job_role" class="required">Job Role</label>
+                        <div class="form-group">
+                            <select id="emp_job_role" name="emp_job_role" required>
+                                <option value="" disabled selected>Select Job Role</option>
+                                <option value="Software Developer">Software Developer</option>
+                                <option value="Web Developer">Web Developer</option>
+                                <option value="Backend Developer">Backend Developer</option>
+                                <option value="Software Tester">Software Tester</option>
+                                <option value="Java Developer">Java Developer</option>
+                                <option value="Python Developer">Python Developer</option>
+                                <option value="Cloud Engineer">Cloud Engineer</option>
+                                <option value="Data Scientist">Data Scientist</option>
+                                <option value="Business Analyst">Business Analyst</option>
+                                <option value="DevOps Engineer">DevOps Engineer</option>
+                                <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+                                <option value="Project Manager">Project Manager</option>
+                                <option value="Full Stack Developer">Full Stack Developer</option>
+                            </select>
+                            <div id="emp_job-error" class="validation-message">Please select a job role</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_department" class="required">Department</label>
+                        <div class="form-group">
+                            <select id="emp_department" name="emp_department" required>
+                                <option value="" disabled selected>Select Department</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Product">Product</option>
+                                <option value="Design">Design</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Human Resources">Human Resources</option>
+                            </select>
+                            <div id="emp_dept-error" class="validation-message">Please select a department</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_joining_date" class="required">Joining Date</label>
+                        <div class="form-group">
+                            <input type="date" id="emp_joining_date" name="emp_joining_date" required>
+                            <div id="emp_joining-error" class="validation-message">Joining date cannot be in the past</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <label class="required">Experience Status</label>
+                        <div class="form-group">
+                            <select id="emp_experience_status" name="emp_experience_status" required>
+                                <option value="" disabled selected>Select Experience</option>
+                                <option value="Fresher">Fresher</option>
+                                <option value="Experienced">Experienced</option>
+                            </select>
+                            <div id="emp_exp-status-error" class="validation-message">Please select experience status</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="experienceFields" style="display:none;">
+                    <p class="form-note">Please enter your most recent experience first.</p>
+                    <div id="experienceContainer">
+                        <div class="experience-item" id="experience1">
+                            <h4>Previous Employment 1 (Most Recent)</h4>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label for="emp_company_name_1" class="required">Previous Company Name</label>
+                                    <div class="form-group">
+                                        <input type="text" id="emp_company_name_1" name="emp_company_name_1" placeholder="Previous Company Name" minlength="3" maxlength="60">
+                                        <div id="emp_company-error-1" class="validation-message">Company name must be 3-60 characters</div>
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <label for="emp_years_of_experience_1" class="required">Years of Experience</label>
+                                    <div class="form-group">
+                                        <input type="number" id="emp_years_of_experience_1" name="emp_years_of_experience_1" placeholder="Years of Experience" min="1" max="40" step="0.1">
+                                        <div id="emp_exp-years-error-1" class="validation-message">Please enter valid years (1-40)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label for="emp_start_date_1" class="required">Start Date</label>
+                                    <div class="form-group">
+                                        <input type="date" id="emp_start_date_1" name="emp_start_date_1">
+                                        <div id="emp_start-date-error-1" class="validation-message">Start date must be after SSC completion</div>
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <label for="emp_end_date_1" class="required">End Date</label>
+                                    <div class="form-group">
+                                        <input type="date" id="emp_end_date_1" name="emp_end_date_1">
+                                        <div id="emp_end-date-error-1" class="validation-message">End date must be after start date and not in the future</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label for="emp_uan_1" class="required">UAN Number</label>
+                                    <div class="form-group">
+                                        <input type="text" id="emp_uan_1" name="emp_uan_1" placeholder="UAN Number" minlength="12" maxlength="12">
+                                        <div id="emp_uan-error-1" class="validation-message">UAN must be exactly 12 digits</div>
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <label for="emp_pf_1" class="required">PF Number</label>
+                                    <div class="form-group">
+                                        <input type="text" id="emp_pf_1" name="emp_pf_1" placeholder="PF Number" minlength="17" maxlength="17">
+                                        <div id="emp_pf-error-1" class="validation-message">PF number must be 17 alphanumeric characters</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label for="emp_offer_letter_1" class="required">Upload Previous Company Offer Letter (PDF only)</label>
+                                    <div class="form-group">
+                                        <input type="file" id="emp_offer_letter_1" name="emp_offer_letter_1" accept=".pdf">
+                                        <div id="emp_offer-letter-error-1" class="validation-message">Please upload your offer letter (PDF only, max 2MB)</div>
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <label for="emp_relieving_letter_1" class="required">Upload Relieving Letter (PDF only)</label>
+                                    <div class="form-group">
+                                        <input type="file" id="emp_relieving_letter_1" name="emp_relieving_letter_1" accept=".pdf">
+                                        <div id="emp_relieving-letter-error-1" class="validation-message">Please upload your relieving letter (PDF only, max 2MB)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <label for="emp_experience_certificate_1">Upload Experience Certificate (PDF only)</label>
+                                    <div class="form-group">
+                                        <input type="file" id="emp_experience_certificate_1" name="emp_experience_certificate_1" accept=".pdf">
+                                        <div id="emp_experience-cert-error-1" class="validation-message">Please upload your experience certificate (PDF only, max 2MB)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="addExperienceBtn" class="btn btn-primary">Add New Experience</button>
+                </div>
+            </div>
+
+            <!-- Education Documents -->
+            <div class="form-section">
+                <h3 class="section-title">Education Documents</h3>
+                
+                <div id="educationContainer">
+                    <div class="education-item">
+                        <h4>SSC (10th Grade)</h4>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="ssc_school" class="required">School Name</label>
+                                <div class="form-group">
+                                    <input type="text" id="ssc_school" name="ssc_school" required minlength="3" maxlength="60">
+                                    <div id="ssc-school-error" class="validation-message">School name must be 3-60 characters</div>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label for="ssc_year" class="required">Year of Completion</label>
+                                <div class="form-group">
+                                    <input type="text" id="ssc_year" name="ssc_year" required maxlength="4">
+                                    <div id="ssc_year-error" class="validation-message">Please enter a valid year</div>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label for="ssc_grade" class="required">Percentage/CGPA</label>
+                                <div class="form-group">
+                                    <input type="text" id="ssc_grade" name="ssc_grade" required minlength="1" maxlength="4">
+                                    <div id="ssc_grade-error" class="validation-message">Percentage must be 4-100% or 4.0-10.0 for CGPA</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SSC Upload Field -->
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="emp_ssc_doc" class="required">Upload SSC Certificate (PDF only)</label>
+                                <div class="form-group">
+                                    <input type="file" id="emp_ssc_doc" name="emp_ssc_doc" required accept=".pdf">
+                                    <div id="ssc-error" class="validation-message">Only PDF file (max 2MB)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="education-item">
+                        <h4>Intermediate/Diploma</h4>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="inter_college" class="required">College Name</label>
+                                <div class="form-group">
+                                    <input type="text" id="inter_college" name="inter_college" required minlength="3" maxlength="60">
+                                    <div id="inter_college-error" class="validation-message">College name must be 3-60 characters</div>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label for="inter_year" class="required">Year of Completion</label>
+                                <div class="form-group">
+                                    <input type="text" id="inter_year" name="inter_year" required maxlength="4">
+                                    <div id="inter_year-error" class="validation-message">Please enter a valid year</div>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label for="inter_grade" class="required">Percentage/CGPA</label>
+                                <div class="form-group">
+                                    <input type="text" id="inter_grade" name="inter_grade" required minlength="1" maxlength="4">
+                                    <div id="inter_grade-error" class="validation-message">Percentage must be 4-100% or 4.0-10.0 for CGPA</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="inter_branch" class="required">Branch/Stream</label>
+                                <div class="form-group">
+                                    <input type="text" id="inter_branch" name="inter_branch" required minlength="3" maxlength="60">
+                                    <div id="inter_branch-error" class="validation-message">Branch must be 3-60 characters</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Intermediate Upload Field -->
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="emp_inter_doc" class="required">Upload Intermediate Certificate (PDF only)</label>
+                                <div class="form-group">
+                                    <input type="file" id="emp_inter_doc" name="emp_inter_doc" required accept=".pdf">
+                                    <div id="inter-error" class="validation-message">Only PDF file (max 2MB)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="education-item">
+                        <h4>Graduation</h4>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="grad_college" class="required">University/College Name</label>
+                                <div class="form-group">
+                                    <input type="text" id="grad_college" name="grad_college" required minlength="3" maxlength="60">
+                                    <div id="grad_college-error" class="validation-message">College name must be 3-60 characters</div>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label for="grad_year" class="required">Year of Completion</label>
+                                <div class="form-group">
+                                    <input type="text" id="grad_year" name="grad_year" required maxlength="4">
+                                    <div id="grad_year-error" class="validation-message">Please enter a valid year</div>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label for="grad_grade" class="required">Percentage/CGPA</label>
+                                <div class="form-group">
+                                    <input type="text" id="grad_grade" name="grad_grade" required minlength="1" maxlength="4">
+                                    <div id="grad_grade-error" class="validation-message">Percentage must be 4-100% or 4.0-10.0 for CGPA</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="grad_degree" class="required">Degree</label>
+                                <div class="form-group">
+                                    <input type="text" id="grad_degree" name="grad_degree" required minlength="3" maxlength="30">
+                                    <div id="grad_degree-error" class="validation-message">Degree must be 3-30 characters</div>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label for="grad_branch" class="required">Branch/Stream</label>
+                                <div class="form-group">
+                                    <input type="text" id="grad_branch" name="grad_branch" required minlength="3" maxlength="30">
+                                    <div id="grad_branch-error" class="validation-message">Branch must be 3-30 characters</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Graduation Upload Field -->
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="emp_grad_doc" class="required">Upload Graduation Certificate (PDF only)</label>
+                                <div class="form-group">
+                                    <input type="file" id="emp_grad_doc" name="emp_grad_doc" required accept=".pdf">
+                                    <div id="grad-error" class="validation-message">Only PDF file (max 2MB)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="addEducationBtn" class="btn btn-primary">Add New Education</button>
+            </div>
+
+            <!-- Additional Documents -->
+            <div class="form-section">
+                <h3 class="section-title">Additional Documents</h3>
+
+                <!-- Resume -->
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="resume" class="required">Upload Resume/CV (PDF only)</label>
+                        <div class="form-group">
+                            <input type="file" id="resume" name="resume" required accept=".pdf">
+                            <div id="resume-error" class="validation-message">Only PDF file (max 2MB)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ID Proof -->
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="id_proof" class="required">Upload ID Proof (Aadhaar/PAN/Passport) Only PDF, JPG, or PNG files (max 2MB)</label>
+                        <div class="form-group">
+                            <input type="file" id="id_proof" name="id_proof" required accept=".pdf,.jpg,.png">
+                            <div id="id_proof-error" class="validation-message">Only PDF, JPG, or PNG files (max 2MB)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signed Offer Letter -->
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="signed_document" class="required">Upload Signed Offer Letter (PDF only)</label>
+                        <div class="form-group">
+                            <input type="file" id="signed_document" name="signed_document" required accept=".pdf">
+                            <div id="signed_doc-error" class="validation-message">Only PDF file (max 2MB)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="emp_terms_accepted" name="emp_terms_accepted" required>
+                <label for="emp_terms_accepted" class="required">I certify that the information provided in this form is true and complete to the best of my knowledge. I understand that any false statements or omissions may be grounds for termination of employment. I consent to the processing of my personal data for the purpose of employment and onboarding in accordance with the company's privacy policy.</label>
+                <div id="terms-error" class="validation-message">You must accept the terms and conditions</div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-block">Submit Onboarding</button>
+            </div>
+        </form>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const SERVER_ENDPOINT = 'http://localhost:3000/save-employee';
+    const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    const emailRegex = /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@(gmail|outlook)\.(com|in|org|co)$/;
+    const mobileRegex = /^[6789]\d{9}$/;
+    const addressRegex = /^[A-Za-z0-9][A-Za-z0-9\s,.\-\/#]+[A-Za-z0-9]$/;
+    const cityRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    const zipRegex = /^[1-9][0-9]{5}$/;
+    const bankRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    const accountRegex = /^(?!0+$)[0-9]{9,18}$/;
+    const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+    const bankBranchRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    const companyRegex = /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/;
+    const expYearsRegex = /^(0\.[1-9]|[1-9]|[1-3][0-9]|40)(?:\.[0-9])?$/;
+    const uanRegex = /^\d{12}$/;
+    const pfRegex = /^[A-Z0-9]{17}$/;
+    const schoolRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    const yearRegex = /^(19|20)\d{2}$/;
+    const branchRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    const degreeRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    const pdfRegex = /\.pdf$/i;
+    const imageRegex = /\.(jpg|jpeg|png)$/i;
+    const aadhaarRegex = /^\d{12}$/;
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+
+    const now = new Date();
+    const indiaOffset = 330;
+    const indiaNow = new Date(now.getTime() + (indiaOffset - now.getTimezoneOffset()) * 60000);
+    const currentYear = indiaNow.getFullYear();
+
+    const joiningDateInput = document.getElementById('emp_joining_date');
+    const sixMonthsLater = new Date(indiaNow);
+    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+    joiningDateInput.min = formatDateForInput(indiaNow);
+    joiningDateInput.max = formatDateForInput(sixMonthsLater);
+    joiningDateInput.value = formatDateForInput(indiaNow);
+
+    const dobInput = document.getElementById('emp_dob');
+    const minDobDate = new Date(indiaNow);
+    minDobDate.setFullYear(minDobDate.getFullYear() - 60);
+    const maxDobDate = new Date(indiaNow);
+    maxDobDate.setFullYear(maxDobDate.getFullYear() - 20);
+    dobInput.max = formatDateForInput(maxDobDate);
+    dobInput.min = formatDateForInput(minDobDate);
+
+    function formatDateForInput(date) {
+        const d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        const year = d.getFullYear();
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        return [year, month, day].join('-');
+    }
+
+    function cleanLetterInput(input) {
+        let value = input.value;
+        if (value.length > 0) {
+            if (value.slice(-1) === ' ' && value.slice(-2, -1) === ' ') {
+                value = value.slice(0, -1);
+            }
+            value = value.replace(/[^A-Za-z ]/g, '')
+                        .replace(/^\s+/, '')
+                        .replace(/\s+/g, ' ');
+        }
+        value = value.substring(0, input.maxLength || 60);
+        input.value = value;
+        return value;
+    }
+
+    function cleanAddressInput(input) {
+        let value = input.value;
+        value = value.replace(/[^A-Za-z0-9\s,.\-\/#]/g, '')
+                    .replace(/([.,\-\/#])\1+/g, '$1')
+                    .replace(/\s+/g, ' ')
+                    .replace(/^\s+/, '')
+                    .replace(/\s+$/, '');
+        value = value.substring(0, input.maxLength || 80);
+        input.value = value;
+        return value;
+    }
+
+    function cleanNumericInput(input) {
+        let value = input.value;
+        value = value.replace(/[^0-9]/g, '');
+        value = value.substring(0, input.maxLength || 18);
+        input.value = value;
+        return value;
+    }
+
+    function cleanEmail(input) {
+        let value = input.value;
+        value = value.replace(/\s+/g, '').toLowerCase();
+        value = value.substring(0, input.maxLength || 60);
+        input.value = value;
+        return value;
+    }
+
+    function cleanCodeInput(input, regex) {
+        let value = input.value;
+        value = value.replace(/\s+/g, '').toUpperCase();
+        value = value.replace(regex, '');
+        value = value.substring(0, input.maxLength || 22);
+        input.value = value;
+        return value;
+    }
+
+    function cleanGradeInput(input) {
+        let value = input.value.replace(/[^0-9.%]/g, '');
+        
+        // Remove any existing percentage sign to avoid duplication
+        value = value.replace(/%/g, '');
+        
+        // Allow only one decimal point
+        value = value.replace(/(\..*?)\..*/g, '$1');
+        
+        // If the value ends with a decimal point, keep it for user convenience
+        if (value.endsWith('.')) {
+            value = value.substring(0, 6);
+            input.value = value;
+            return value;
+        }
+        
+        // Parse the numeric value
+        const numericValue = parseFloat(value);
+        
+        if (!isNaN(numericValue)) {
+            // Auto-detect if it's percentage (>=10) or CGPA (<10)
+            if (numericValue >= 10 || value.includes('%')) {
+                // It's a percentage value (4-100)
+                if (numericValue > 100) {
+                    value = '100';
+                } else if (numericValue < 4) {
+                    value = '4';
+                }
+                // Add percentage sign only if not already present
+                if (!input.value.includes('%')) {
+                    value += '%';
+                }
+            } else {
+                // It's a CGPA value (4.0-10.0)
+                if (numericValue > 10) {
+                    value = '10';
+                } else if (numericValue < 4) {
+                    value = '4';
+                }
+            }
+        }
+        
+        value = value.substring(0, 6);
+        input.value = value;
+        return value;
+    }
+
+    function cleanExperienceYears(input) {
+        let value = input.value.replace(/[^0-9.]/g, '');
+        value = value.replace(/(\..*?)\..*/g, '$1');
+        value = value.substring(0, 5);
+        input.value = value;
+        return value;
+    }
+
+    const experienceStatus = document.getElementById('emp_experience_status');
+    const experienceFields = document.getElementById('experienceFields');
+
+    function toggleExperienceFields() {
+        const isExperienced = experienceStatus.value === 'Experienced';
+        experienceFields.style.display = isExperienced ? 'block' : 'none';
+        const experienceFieldsToToggle = [
+            'emp_company_name_1', 'emp_years_of_experience_1', 
+            'emp_start_date_1', 'emp_end_date_1',
+            'emp_uan_1', 'emp_pf_1', 
+            'emp_offer_letter_1', 'emp_relieving_letter_1', 
+            'emp_experience_certificate_1'
+        ];
+        experienceFieldsToToggle.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                if (isExperienced) {
+                    if (field.type !== 'file' || field.id.includes('offer_letter') || field.id.includes('relieving_letter')) {
+                        field.setAttribute('required', '');
+                    }
+                } else {
+                    field.removeAttribute('required');
+                    field.value = '';
+                    const errorElement = document.getElementById(fieldId.replace(/_\d$/, '-error-1'));
+                    if (errorElement) {
+                        errorElement.classList.remove('visible');
+                        field.classList.remove('invalid', 'valid');
+                    }
+                }
+            }
+        });
+    }
+
+    experienceStatus.addEventListener('change', toggleExperienceFields);
+    toggleExperienceFields();
+
+    let experienceCount = 1;
+    const maxExperiences = 3;
+    const addExperienceBtn = document.getElementById('addExperienceBtn');
+    const experienceContainer = document.getElementById('experienceContainer');
+    const initialExperienceHTML = experienceContainer.innerHTML;
+
+    function createExperienceHTML(index) {
+        return `
+            <div class="experience-item" id="experience${index}">
+                <div class="experience-header">
+                    <h4>Previous Employment ${index}</h4>
+                    ${index > 1 ? `<button type="button" class="btn btn-danger remove-experience" data-index="${index}">Remove</button>` : ''}
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_company_name_${index}" class="required">Previous Company Name</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_company_name_${index}" name="emp_company_name_${index}" placeholder="Previous Company Name" minlength="3" maxlength="60" required>
+                            <div id="emp_company-error-${index}" class="validation-message">Company name must be 3-60 characters</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_years_of_experience_${index}" class="required">Years of Experience</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_years_of_experience_${index}" name="emp_years_of_experience_${index}" placeholder="Years of Experience" required>
+                            <div id="emp_exp-years-error-${index}" class="validation-message">Please enter valid years (0.1-40)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_start_date_${index}" class="required">Start Date</label>
+                        <div class="form-group">
+                            <input type="date" id="emp_start_date_${index}" name="emp_start_date_${index}" required>
+                            <div id="emp_start-date-error-${index}" class="validation-message">Start date must be after SSC completion</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_end_date_${index}" class="required">End Date</label>
+                        <div class="form-group">
+                            <input type="date" id="emp_end_date_${index}" name="emp_end_date_${index}" required>
+                            <div id="emp_end-date-error-${index}" class="validation-message">End date must be at least 1 month after start date and not in the future</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_uan_${index}" class="required">UAN Number</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_uan_${index}" name="emp_uan_${index}" placeholder="UAN Number" minlength="12" maxlength="12" required>
+                            <div id="emp_uan-error-${index}" class="validation-message">UAN must be exactly 12 digits</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_pf_${index}" class="required">PF Number</label>
+                        <div class="form-group">
+                            <input type="text" id="emp_pf_${index}" name="emp_pf_${index}" placeholder="PF Number" minlength="17" maxlength="17" required>
+                            <div id="emp_pf-error-${index}" class="validation-message">PF number must be 17 alphanumeric characters</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_offer_letter_${index}" class="required">Upload Previous Company Offer Letter (PDF only)</label>
+                        <div class="form-group">
+                            <input type="file" id="emp_offer_letter_${index}" name="emp_offer_letter_${index}" accept=".pdf" required>
+                            <div id="emp_offer-letter-error-${index}" class="validation-message">Please upload your offer letter (PDF only, max 2MB)</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="emp_relieving_letter_${index}" class="required">Upload Relieving Letter (PDF only)</label>
+                        <div class="form-group">
+                            <input type="file" id="emp_relieving_letter_${index}" name="emp_relieving_letter_${index}" accept=".pdf" required>
+                            <div id="emp_relieving-letter-error-${index}" class="validation-message">Please upload your relieving letter (PDF only, max 2MB)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_experience_certificate_${index}">Upload Experience Certificate (PDF only)</label>
+                        <div class="form-group">
+                            <input type="file" id="emp_experience_certificate_${index}" name="emp_experience_certificate_${index}" accept=".pdf">
+                            <div id="emp_experience-cert-error-${index}" class="validation-message">Please upload your experience certificate (PDF only, max 2MB)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    addExperienceBtn.addEventListener('click', function() {
+        if (experienceCount < maxExperiences) {
+            experienceCount++;
+            const newExperience = document.createElement('div');
+            newExperience.className = 'experience-item';
+            newExperience.id = `experience${experienceCount}`;
+            newExperience.innerHTML = createExperienceHTML(experienceCount);
+            experienceContainer.appendChild(newExperience);
+            addEventListenersForExperience(experienceCount);
+            updateExperienceDateConstraints(experienceCount);
+            if (experienceCount === maxExperiences) {
+                addExperienceBtn.disabled = true;
+            }
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-experience')) {
+            const index = e.target.getAttribute('data-index');
+            const experienceToRemove = document.getElementById(`experience${index}`);
+            if (experienceToRemove) {
+                experienceToRemove.remove();
+                experienceCount--;
+                addExperienceBtn.disabled = false;
+                renumberExperienceSections();
+            }
+        }
+    });
+
+    function renumberExperienceSections() {
+        const experienceItems = document.querySelectorAll('.experience-item');
+        experienceItems.forEach((item, index) => {
+            const newIndex = index + 1;
+            item.id = `experience${newIndex}`;
+            item.querySelector('h4').textContent = `Previous Employment ${newIndex}${newIndex === 1 ? ' (Most Recent)' : ''}`;
+            
+            const inputs = item.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                const oldId = input.id;
+                const baseId = oldId.replace(/_\d+$/, '');
+                input.id = `${baseId}_${newIndex}`;
+                input.name = `${baseId}_${newIndex}`;
+            });
+
+            const errorMessages = item.querySelectorAll('.validation-message');
+            errorMessages.forEach(error => {
+                const oldId = error.id;
+                const baseId = oldId.replace(/-\d+$/, '');
+                error.id = `${baseId}-${newIndex}`;
+            });
+
+            const removeBtn = item.querySelector('.remove-experience');
+            if (removeBtn) {
+                removeBtn.setAttribute('data-index', newIndex);
+            }
+        });
+    }
+
+    let educationCount = 3;
+    const maxEducations = 5;
+    const addEducationBtn = document.getElementById('addEducationBtn');
+    const educationContainer = document.getElementById('educationContainer');
+    const initialEducationHTML = educationContainer.innerHTML;
+
+    function createEducationHTML(index) {
+        return `
+            <div class="education-item" id="education${index}">
+                <div class="education-header">
+                    <h4>Additional Education ${index - 2}</h4>
+                    <button type="button" class="btn btn-danger remove-education" data-index="${index}">Remove</button>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="extra_college_${index}" class="required">University/College Name</label>
+                        <div class="form-group">
+                            <input type="text" id="extra_college_${index}" name="extra_college_${index}" required minlength="3" maxlength="60">
+                            <div id="extra-college-error-${index}" class="validation-message">College name must be 3-60 characters</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="extra_year_${index}" class="required">Year of Completion</label>
+                        <div class="form-group">
+                            <input type="text" id="extra_year_${index}" name="extra_year_${index}" required maxlength="4">
+                            <div id="extra-year-error-${index}" class="validation-message">Please enter a valid year</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="extra_grade_${index}" class="required">Percentage/CGPA</label>
+                        <div class="form-group">
+                            <input type="text" id="extra_grade_${index}" name="extra_grade_${index}" required minlength="1" maxlength="6">
+                            <div id="extra-grade-error-${index}" class="validation-message">Percentage must be 4-100% or CGPA 4.0-10.0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="extra_degree_${index}" class="required">Degree</label>
+                        <div class="form-group">
+                            <input type="text" id="extra_degree_${index}" name="extra_degree_${index}" required minlength="3" maxlength="30">
+                            <div id="extra-degree-error-${index}" class="validation-message">Degree must be 3-30 characters</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label for="extra_branch_${index}" class="required">Branch/Stream</label>
+                        <div class="form-group">
+                            <input type="text" id="extra_branch_${index}" name="extra_branch_${index}" required minlength="3" maxlength="30">
+                            <div id="extra-branch-error-${index}" class="validation-message">Branch must be 3-30 characters</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="emp_extra_doc_${index}" class="required">Upload Certificate (PDF only)</label>
+                        <div class="form-group">
+                            <input type="file" id="emp_extra_doc_${index}" name="emp_extra_doc_${index}" required accept=".pdf">
+                            <div id="extra-error-${index}" class="validation-message">Only PDF file (max 2MB)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    addEducationBtn.addEventListener('click', function() {
+        if (educationCount < maxEducations) {
+            const gradYear = document.getElementById('grad_year').value;
+            if (!gradYear || !yearRegex.test(gradYear)) {
+                alert('Please fill graduation details first');
+                return;
+            }
+            
+            educationCount++;
+            const newEducation = document.createElement('div');
+            newEducation.className = 'education-item';
+            newEducation.id = `education${educationCount}`;
+            newEducation.innerHTML = createEducationHTML(educationCount);
+            educationContainer.appendChild(newEducation);
+            addEventListenersForEducation(educationCount);
+            if (educationCount === maxEducations) {
+                addEducationBtn.disabled = true;
+            }
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-education')) {
+            const index = e.target.getAttribute('data-index');
+            const educationToRemove = document.getElementById(`education${index}`);
+            if (educationToRemove) {
+                educationToRemove.remove();
+                educationCount--;
+                addEducationBtn.disabled = false;
+                renumberEducationSections();
+            }
+        }
+    });
+
+    function renumberEducationSections() {
+        const educationItems = document.querySelectorAll('.education-item');
+        educationItems.forEach((item, index) => {
+            const newIndex = index + 4;
+            item.id = `education${newIndex}`;
+            item.querySelector('h4').textContent = `Additional Education ${newIndex - 2}`;
+            
+            const inputs = item.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                const oldId = input.id;
+                const baseId = oldId.replace(/_\d+$/, '');
+                input.id = `${baseId}_${newIndex}`;
+                input.name = `${baseId}_${newIndex}`;
+            });
+
+            const errorMessages = item.querySelectorAll('.validation-message');
+            errorMessages.forEach(error => {
+                const oldId = error.id;
+                const baseId = oldId.replace(/-\d+$/, '');
+                error.id = `${baseId}-${newIndex}`;
+            });
+
+            const removeBtn = item.querySelector('.remove-education');
+            if (removeBtn) {
+                removeBtn.setAttribute('data-index', newIndex);
+            }
+        });
+    }
+
+    function updateExperienceDateConstraints(index) {
+        const startDateInput = document.getElementById(`emp_start_date_${index}`);
+        const endDateInput = document.getElementById(`emp_end_date_${index}`);
+        const sscYear = document.getElementById('ssc_year').value;
+
+        if (startDateInput && endDateInput) {
+            if (sscYear && yearRegex.test(sscYear)) {
+                const minStartDate = new Date(parseInt(sscYear) + 1, 0, 1);
+                startDateInput.min = formatDateForInput(minStartDate);
+            }
+            
+            endDateInput.max = formatDateForInput(indiaNow);
+            
+            if (index > 1) {
+                const prevEndDateInput = document.getElementById(`emp_end_date_${index - 1}`);
+                if (prevEndDateInput.value) {
+                    startDateInput.min = prevEndDateInput.value;
+                }
+            }
+        }
+    }
+
+    function validateField(input) {
+        const errorId = input.id.match(/_\d+$/) 
+            ? `${input.id.replace(/_\d+$/, '')}-error${input.id.match(/_\d+$/)[0].replace('_', '-')}`
+            : `${input.id}-error`;
+        const error = document.getElementById(errorId);
+        if (!error) return true;
+
+        let isValid = true;
+        let errorMessage = '';
+
+        if (input.required && !input.value && input.type !== 'checkbox') {
+            isValid = false;
+            errorMessage = `Please ${input.type === 'select-one' ? 'select' : 'enter'} a ${input.labels[0]?.textContent.toLowerCase() || 'value'}`;
+        } else if (input.value || input.type === 'checkbox') {
+            switch(input.id) {
+                case 'emp_name':
+                case 'primary_contact_name':
+                case 'secondary_contact_name':
+                    isValid = nameRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Name must be 3-60 alphabetic characters with single spaces';
+                    break;
+                case 'emp_email':
+                case 'primary_contact_email':
+                case 'secondary_contact_email':
+                    isValid = emailRegex.test(input.value);
+                    errorMessage = 'Please enter a valid email address (e.g., user@gmail.com)';
+                    break;
+                case 'emp_mobile':
+                case 'emp_alt_mobile':
+                case 'primary_contact_mobile':
+                case 'secondary_contact_mobile':
+                    isValid = mobileRegex.test(input.value);
+                    errorMessage = 'Please enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
+                    
+                    // Check for duplicate mobile numbers
+                    if (isValid) {
+                        const mobileNumbers = [
+                            document.getElementById('emp_mobile').value,
+                            document.getElementById('emp_alt_mobile').value,
+                            document.getElementById('primary_contact_mobile').value,
+                            document.getElementById('secondary_contact_mobile').value
+                        ];
+                        
+                        // Count occurrences of current value
+                        const count = mobileNumbers.filter(num => num === input.value).length;
+                        if (count > 1) {
+                            isValid = false;
+                            errorMessage = 'This mobile number is already used for another field';
+                        }
+                    }
+                    break;
+                case 'emp_dob':
+                    const dob = new Date(input.value);
+                    const minDob = new Date(dobInput.min);
+                    const maxDob = new Date(dobInput.max);
+                    isValid = dob >= minDob && dob <= maxDob;
+                    errorMessage = 'Employee must be between 20 and 60 years old';
+                    break;
+                case 'emp_gender':
+                case 'emp_marital_status':
+                case 'emp_job_role':
+                case 'emp_department':
+                case 'emp_experience_status':
+                case 'primary_contact_relation':
+                case 'secondary_contact_relation':
+                case 'emp_state':
+                    isValid = input.value !== '';
+                    errorMessage = `Please select a ${input.labels[0].textContent.toLowerCase()}`;
+                    break;
+                case 'emp_aadhaar':
+                    isValid = aadhaarRegex.test(input.value);
+                    errorMessage = 'Aadhaar must be exactly 12 digits';
+                    break;
+                case 'emp_pan':
+                    isValid = panRegex.test(input.value);
+                    errorMessage = 'PAN must be 10 alphanumeric characters (e.g., ABCDE1234F)';
+                    break;
+                case 'emp_address':
+                    isValid = addressRegex.test(input.value) && input.value.length >= 5 && input.value.length <= 80;
+                    errorMessage = 'Address must be 5-80 characters with letters, numbers, and allowed symbols';
+                    break;
+                case 'emp_city':
+                    isValid = cityRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Please enter a valid city name';
+                    break;
+                case 'emp_zipcode':
+                    isValid = zipRegex.test(input.value);
+                    errorMessage = 'Please enter a valid 6-digit zip code';
+                    break;
+                case 'emp_bank':
+                case 'emp_bank_branch':
+                    isValid = bankRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Must be 3-60 alphabetic characters with single spaces';
+                    break;
+                case 'emp_account':
+                    isValid = accountRegex.test(input.value);
+                    errorMessage = 'Account number must be 9-18 digits';
+                    break;
+                case 'emp_ifsc':
+                    isValid = ifscRegex.test(input.value);
+                    errorMessage = 'Please enter a valid IFSC code (e.g., ABCD0123456)';
+                    break;
+                case 'emp_joining_date':
+                    const joiningDate = new Date(input.value);
+                    const minJoining = new Date(joiningDateInput.min);
+                    const maxJoining = new Date(joiningDateInput.max);
+                    isValid = joiningDate >= minJoining && joiningDate <= maxJoining;
+                    errorMessage = 'Joining date must be today or within the next 6 months';
+                    break;
+                case 'emp_company_name_1':
+                case 'emp_company_name_2':
+                case 'emp_company_name_3':
+                    isValid = companyRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Company name must be 3-60 characters';
+                    break;
+                case 'emp_years_of_experience_1':
+                case 'emp_years_of_experience_2':
+                case 'emp_years_of_experience_3':
+                    isValid = expYearsRegex.test(input.value) && parseFloat(input.value) <= 40;
+                    errorMessage = 'Please enter valid years (0.1-40)';
+                    break;
+                case 'emp_start_date_1':
+                case 'emp_start_date_2':
+                case 'emp_start_date_3':
+                    const sscYear = document.getElementById('ssc_year').value;
+                    if (sscYear && yearRegex.test(sscYear)) {
+                        const minStart = new Date(parseInt(sscYear) + 1, 0, 1);
+                        const startDate = new Date(input.value);
+                        isValid = startDate >= minStart && startDate <= indiaNow;
+                        errorMessage = 'Start date must be after SSC completion and not in the future';
+                    }
+                    break;
+                case 'emp_end_date_1':
+                case 'emp_end_date_2':
+                case 'emp_end_date_3':
+                    const index = input.id.split('_').pop();
+                    const startDateInput = document.getElementById(`emp_start_date_${index}`);
+                    if (startDateInput.value) {
+                        const startDate = new Date(startDateInput.value);
+                        const endDate = new Date(input.value);
+                        const minEndDate = new Date(startDate);
+                        minEndDate.setMonth(minEndDate.getMonth() + 1);
+                        isValid = endDate >= minEndDate && endDate <= indiaNow;
+                        
+                        if (index > 1) {
+                            const nextStartDateInput = document.getElementById(`emp_start_date_${parseInt(index) + 1}`);
+                            if (nextStartDateInput && nextStartDateInput.value) {
+                                isValid = isValid && endDate <= new Date(nextStartDateInput.value);
+                                errorMessage = 'End date must be before next employment start date';
+                            }
+                        } else {
+                            errorMessage = 'End date must be at least 1 month after start date and not in the future';
+                        }
+                    }
+                    break;
+                case 'emp_uan_1':
+                case 'emp_uan_2':
+                case 'emp_uan_3':
+                    isValid = uanRegex.test(input.value);
+                    errorMessage = 'UAN must be exactly 12 digits';
+                    break;
+                case 'emp_pf_1':
+                case 'emp_pf_2':
+                case 'emp_pf_3':
+                    isValid = pfRegex.test(input.value);
+                    errorMessage = 'PF number must be 17 alphanumeric characters';
+                    break;
+                case 'ssc_school':
+                case 'inter_college':
+                case 'grad_college':
+                case 'extra_college_4':
+                case 'extra_college_5':
+                    isValid = schoolRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Name must be 3-60 alphabetic characters with single spaces';
+                    break;
+                case 'ssc_year':
+                    const dobYear = new Date(document.getElementById('emp_dob').value).getFullYear();
+                    isValid = yearRegex.test(input.value) && 
+                              parseInt(input.value) >= (dobYear + 12) && 
+                              parseInt(input.value) <= currentYear;
+                    errorMessage = `SSC year must be at least 12 years after birth (${dobYear + 12}-${currentYear})`;
+                    break;
+                case 'inter_year':
+                    const sscYearVal = document.getElementById('ssc_year').value;
+                    isValid = yearRegex.test(input.value) && 
+                              parseInt(input.value) <= currentYear;
+                    if (sscYearVal && yearRegex.test(sscYearVal)) {
+                        isValid = isValid && parseInt(input.value) >= (parseInt(sscYearVal) + 2);
+                        errorMessage = `Year must be at least 2 years after SSC (${parseInt(sscYearVal) + 2}-${currentYear})`;
+                    }
+                    break;
+                case 'grad_year':
+                    const interYearVal = document.getElementById('inter_year').value;
+                    isValid = yearRegex.test(input.value) && 
+                              parseInt(input.value) <= (currentYear + 2);
+                    if (interYearVal && yearRegex.test(interYearVal)) {
+                        isValid = isValid && parseInt(input.value) >= (parseInt(interYearVal) + 3);
+                        errorMessage = `Year must be at least 3 years after Intermediate (${parseInt(interYearVal) + 3}-${currentYear + 2})`;
+                    }
+                    break;
+                case 'extra_year_4':
+                case 'extra_year_5':
+                    const gradYearVal = document.getElementById('grad_year').value;
+                    isValid = yearRegex.test(input.value) && 
+                              parseInt(input.value) <= (currentYear + 2);
+                    if (gradYearVal && yearRegex.test(gradYearVal)) {
+                        isValid = isValid && parseInt(input.value) >= parseInt(gradYearVal);
+                        errorMessage = `Year must be after graduation (${gradYearVal}-${currentYear + 2})`;
+                    }
+                    break;
+                case 'ssc_grade':
+                case 'inter_grade':
+                case 'grad_grade':
+                case 'extra_grade_4':
+                case 'extra_grade_5':
+                    // Enhanced grade validation
+                    let value = input.value.replace(/%/g, '');
+                    const numericValue = parseFloat(value);
+                    
+                    // Auto-detect if it's percentage (>=10) or CGPA (<10)
+                    const isPercentage = numericValue >= 10 || input.value.includes('%');
+                    
+                    if (isPercentage) {
+                        isValid = numericValue >= 4 && numericValue <= 100;
+                        errorMessage = 'Percentage must be between 4% and 100%';
+                        if (isValid && !input.value.includes('%')) {
+                            input.value = numericValue + '%';
+                        }
+                    } else {
+                        isValid = numericValue >= 4 && numericValue <= 10;
+                        errorMessage = 'CGPA must be between 4.0 and 10.0';
+                    }
+                    break;
+                case 'inter_branch':
+                case 'grad_branch':
+                case 'extra_branch_4':
+                case 'extra_branch_5':
+                    isValid = branchRegex.test(input.value) && 
+                              input.value.length >= 3 && 
+                              input.value.length <= 30;
+                    errorMessage = 'Branch must be 3-30 alphabetic characters with single spaces';
+                    break;
+                case 'grad_degree':
+                case 'extra_degree_4':
+                case 'extra_degree_5':
+                    isValid = degreeRegex.test(input.value) && 
+                              input.value.length >= 3 && 
+                              input.value.length <= 30;
+                    errorMessage = 'Degree must be 3-30 alphabetic characters with single spaces';
+                    break;
+                case 'emp_terms_accepted':
+                    isValid = input.checked;
+                    errorMessage = 'You must accept the terms and conditions';
+                    break;
+            }
+        }
+
+        if (isValid) {
+            input.classList.remove('invalid');
+            input.classList.add('valid');
+            error.classList.remove('visible');
+        } else {
+            input.classList.remove('valid');
+            input.classList.add('invalid');
+            error.textContent = errorMessage;
+            error.classList.add('visible');
+        }
+        return isValid;
+    }
+    function validateFileInput(input, allowedTypes, maxSizeMB) {
+        const errorId = `${input.id}-error`;
+        const error = document.getElementById(errorId);
+        if (!error) return true;
+    
+        let isValid = true;
+        let errorMessage = '';
+    
+        if (input.required && !input.files.length) {
+            isValid = false;
+            errorMessage = `Please upload a ${input.labels[0].textContent.toLowerCase()}`;
+        } else if (input.files.length) {
+            const file = input.files[0];
+            const fileSizeMB = file.size / (1024 * 1024);
+            const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+    
+            if (!allowedTypes.includes(fileExt)) {
+                isValid = false;
+                errorMessage = `Only ${allowedTypes.join(', ')} files allowed`;
+            } else if (fileSizeMB > maxSizeMB) {
+                isValid = false;
+                errorMessage = `File size must not exceed ${maxSizeMB}MB`;
+            }
+        }
+    
+        if (isValid) {
+            input.classList.remove('invalid');
+            input.classList.add('valid');
+            error.classList.remove('visible');
+        } else {
+            input.classList.remove('valid');
+            input.classList.add('invalid');
+            error.textContent = errorMessage;
+            error.classList.add('visible');
+        }
+        return isValid;
+    }
+    
+    function validateSSCDoc() {
+        return validateFileInput(document.getElementById('emp_ssc_doc'), ['.pdf'], 2);
+    }
+    
+    function validateInterDoc() {
+        return validateFileInput(document.getElementById('emp_inter_doc'), ['.pdf'], 2);
+    }
+    
+    function validateGradDoc() {
+        return validateFileInput(document.getElementById('emp_grad_doc'), ['.pdf'], 2);
+    }
+    
+    function validateExtraDoc(index) {
+        return validateFileInput(document.getElementById(`emp_extra_doc_${index}`), ['.pdf'], 2);
+    }
+    
+    function validateProfilePic() {
+        return validateFileInput(document.getElementById('emp_profile_pic'), ['.jpg', '.jpeg', '.png'], 2);
+    }
+    
+    function validateOfferLetter(index) {
+        return validateFileInput(document.getElementById(`emp_offer_letter_${index}`), ['.pdf'], 2);
+    }
+    
+    function validateRelievingLetter(index) {
+        return validateFileInput(document.getElementById(`emp_relieving_letter_${index}`), ['.pdf'], 2);
+    }
+    
+    function validateExperienceCert(index) {
+        return validateFileInput(document.getElementById(`emp_experience_certificate_${index}`), ['.pdf'], 2);
+    }
+    
+    function validateResume() {
+        return validateFileInput(document.getElementById('resume'), ['.pdf'], 2);
+    }
+    
+    function validateIdProof() {
+        return validateFileInput(document.getElementById('id_proof'), ['.pdf', '.jpg', '.jpeg', '.png'], 2);
+    }
+    
+    function validateSignedDoc() {
+        return validateFileInput(document.getElementById('signed_document'), ['.pdf'], 2);
+    }
+    
+    function addEventListenersForExperience(index) {
+        const fields = [
+            `emp_company_name_${index}`,
+            `emp_years_of_experience_${index}`,
+            `emp_start_date_${index}`,
+            `emp_end_date_${index}`,
+            `emp_uan_${index}`,
+            `emp_pf_${index}`,
+            `emp_offer_letter_${index}`,
+            `emp_relieving_letter_${index}`,
+            `emp_experience_certificate_${index}`
+        ];
+        fields.forEach(fieldId => {
+            const input = document.getElementById(fieldId);
+            if (input) {
+                if (input.type === 'file') {
+                    input.addEventListener('change', () => {
+                        if (fieldId.includes('offer_letter')) {
+                            validateOfferLetter(index);
+                        } else if (fieldId.includes('relieving_letter')) {
+                            validateRelievingLetter(index);
+                        } else if (fieldId.includes('experience_certificate')) {
+                            validateExperienceCert(index);
+                        }
+                    });
+                } else {
+                    input.addEventListener('input', () => {
+                        validateField(input);
+                        if (fieldId.includes('start_date') || fieldId.includes('end_date')) {
+                            updateExperienceDateConstraints(index);
+                        }
+                    });
+                    input.addEventListener('blur', () => validateField(input));
+                }
+            }
+        });
+    }
+    
+    function addEventListenersForEducation(index) {
+        const fields = [
+            `extra_college_${index}`,
+            `extra_year_${index}`,
+            `extra_grade_${index}`,
+            `extra_degree_${index}`,
+            `extra_branch_${index}`,
+            `emp_extra_doc_${index}`
+        ];
+        fields.forEach(fieldId => {
+            const input = document.getElementById(fieldId);
+            if (input) {
+                if (fieldId.includes('extra_doc')) {
+                    input.addEventListener('change', () => validateExtraDoc(index));
+                } else {
+                    input.addEventListener('input', () => validateField(input));
+                    input.addEventListener('blur', () => validateField(input));
+                }
+            }
+        });
+    }
+    
+    // Add event listeners for static fields
+    const inputFields = document.querySelectorAll('input:not([type="file"]), select');
+    inputFields.forEach(input => {
+        if (input.type === 'checkbox') {
+            input.addEventListener('change', () => validateField(input));
+        } else {
+            input.addEventListener('input', () => {
+                if (['emp_name', 'primary_contact_name', 'secondary_contact_name', 'emp_bank', 'emp_bank_branch', 'ssc_school', 'inter_college', 'grad_college', 'extra_college_4', 'extra_college_5', 'emp_company_name_1', 'emp_company_name_2', 'emp_company_name_3', 'inter_branch', 'grad_branch', 'grad_degree', 'extra_branch_4', 'extra_branch_5', 'extra_degree_4', 'extra_degree_5', 'emp_city'].includes(input.id)) {
+                    cleanLetterInput(input);
+                } else if (['emp_address'].includes(input.id)) {
+                    cleanAddressInput(input);
+                } else if (['emp_mobile', 'emp_alt_mobile', 'primary_contact_mobile', 'secondary_contact_mobile', 'emp_aadhaar', 'emp_account', 'emp_uan_1', 'emp_uan_2', 'emp_uan_3', 'ssc_year', 'inter_year', 'grad_year', 'extra_year_4', 'extra_year_5'].includes(input.id)) {
+                    cleanNumericInput(input);
+                } else if (['emp_email', 'primary_contact_email', 'secondary_contact_email'].includes(input.id)) {
+                    cleanEmail(input);
+                } else if (['emp_ifsc', 'emp_pan', 'emp_pf_1', 'emp_pf_2', 'emp_pf_3'].includes(input.id)) {
+                    cleanCodeInput(input, /[^A-Z0-9]/g);
+                } else if (['emp_years_of_experience_1', 'emp_years_of_experience_2', 'emp_years_of_experience_3'].includes(input.id)) {
+                    cleanExperienceYears(input);
+                } else if (['ssc_grade', 'inter_grade', 'grad_grade', 'extra_grade_4', 'extra_grade_5'].includes(input.id)) {
+                    cleanGradeInput(input);
+                }
+                validateField(input);
+            });
+            input.addEventListener('blur', () => validateField(input));
+        }
+    });
+    
+    // Add event listeners for file inputs
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(input => {
+        input.addEventListener('change', () => {
+            switch(input.id) {
+                case 'emp_ssc_doc': validateSSCDoc(); break;
+                case 'emp_inter_doc': validateInterDoc(); break;
+                case 'emp_grad_doc': validateGradDoc(); break;
+                case 'emp_profile_pic': validateProfilePic(); break;
+                case 'resume': validateResume(); break;
+                case 'id_proof': validateIdProof(); break;
+                case 'signed_document': validateSignedDoc(); break;
+                default:
+                    if (input.id.includes('offer_letter')) {
+                        validateOfferLetter(input.id.split('_').pop());
+                    } else if (input.id.includes('relieving_letter')) {
+                        validateRelievingLetter(input.id.split('_').pop());
+                    } else if (input.id.includes('experience_certificate')) {
+                        validateExperienceCert(input.id.split('_').pop());
+                    } else if (input.id.includes('extra_doc')) {
+                        validateExtraDoc(input.id.split('_').pop());
+                    }
+            }
+        });
+    });
+    
+    // Form submission
+    const form = document.getElementById('onboardingForm');
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const errorSummary = document.getElementById('errorSummary');
+        const errorList = document.getElementById('errorList');
+        errorList.innerHTML = '';
+        errorSummary.classList.remove('visible');
+    
+        let allValid = true;
+        const errors = [];
+    
+        // Validate all non-file inputs
+        const inputs = form.querySelectorAll('input:not([type="file"]), select');
+        inputs.forEach(input => {
+            if (!validateField(input)) {
+                allValid = false;
+                errors.push(`${input.labels[0]?.textContent || input.id} is invalid`);
+            }
+        });
+    
+        // Validate all file inputs
+        const files = form.querySelectorAll('input[type="file"]');
+        files.forEach(input => {
+            let fileValid = true;
+            switch(input.id) {
+                case 'emp_ssc_doc': fileValid = validateSSCDoc(); break;
+                case 'emp_inter_doc': fileValid = validateInterDoc(); break;
+                case 'emp_grad_doc': fileValid = validateGradDoc(); break;
+                case 'emp_profile_pic': fileValid = validateProfilePic(); break;
+                case 'resume': fileValid = validateResume(); break;
+                case 'id_proof': fileValid = validateIdProof(); break;
+                case 'signed_document': fileValid = validateSignedDoc(); break;
+                default:
+                    if (input.id.includes('offer_letter')) {
+                        fileValid = validateOfferLetter(input.id.split('_').pop());
+                    } else if (input.id.includes('relieving_letter')) {
+                        fileValid = validateRelievingLetter(input.id.split('_').pop());
+                    } else if (input.id.includes('experience_certificate')) {
+                        fileValid = validateExperienceCert(input.id.split('_').pop());
+                    } else if (input.id.includes('extra_doc')) {
+                        fileValid = validateExtraDoc(input.id.split('_').pop());
+                    }
+            }
+            if (!fileValid) {
+                allValid = false;
+                errors.push(`${input.labels[0]?.textContent || input.id} is invalid`);
+            }
+        });
+    
+        if (!allValid) {
+            errorSummary.classList.add('visible');
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+    
+        const formData = new FormData(form);
+        try {
+            const response = await fetch(SERVER_ENDPOINT, {
+                method: 'POST',
+                body: formData
+            });
+            if (response.ok) {
+                alert('Onboarding form submitted successfully!');
+                form.reset();
+                toggleExperienceFields();
+                experienceContainer.innerHTML = initialExperienceHTML;
+                educationContainer.innerHTML = initialEducationHTML;
+                experienceCount = 1;
+                educationCount = 3;
+                addExperienceBtn.disabled = false;
+                addEducationBtn.disabled = true;
+            } else {
+                alert('Failed to submit the form. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('An error occurred while submitting the form.');
+        }
+    });
+    
+    // Close the DOMContentLoaded event listener
+    });
+
+    </script>
+</body>
+</html>
