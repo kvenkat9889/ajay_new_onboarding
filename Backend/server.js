@@ -85,7 +85,7 @@ const setupDatabase = async () => {
   try {
     client = await pool.connect();
     console.log('Connected to PostgreSQL');
-    await client.query('DROP TABLE IF EXISTS ajay_table');
+    // await client.query('DROP TABLE IF EXISTS ajay_table');
     await client.query(`
       CREATE TABLE IF NOT EXISTS ajay_table (
         id SERIAL PRIMARY KEY,
