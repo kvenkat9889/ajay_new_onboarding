@@ -337,20 +337,20 @@
             cursor: not-allowed;
         }
         .invalid {
-            border: 1px solid red !important;
-        }
-        .valid {
-            border: 1px solid green !important;
-        }
-        .validation-message {
-            display: none;
-            color: red;
-            font-size: 0.8em;
-            margin-top: 5px;
-        }
-        .validation-message.visible {
-            display: block;
-        }
+    border: 1px solid red !important;
+}
+.valid {
+    border: 1px solid green !important;
+}
+.validation-message {
+    display: none;
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+.validation-message.visible {
+    display: block;
+}
     </style>
 </head>
 <body>
@@ -509,6 +509,7 @@
                             <div id="primary-contact-email-error" class="validation-message">Please enter a valid email address</div>
                         </div>
                     </div>
+                    
                 </div>
 
                 <h4>Secondary Emergency Contact (Optional)</h4>
@@ -1012,11 +1013,9 @@
             </div>
         </form>
     </div>
-   <script>
-
+    <script>
 document.addEventListener('DOMContentLoaded', function() {
     const SERVER_ENDPOINT = 'http://localhost:3000/save-employee';
-    const HEALTH_ENDPOINT = 'http://localhost:3000/health';
     const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
     const emailRegex = /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@(gmail|outlook)\.(com|in|org|co)$/;
     const mobileRegex = /^[6789]\d{9}$/;
@@ -1028,7 +1027,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
     const bankBranchRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
     const companyRegex = /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/;
-    const expYearsRegex = /^(0\.[1-9]|[1-9]|[1-3][0-9]|40)(?:\.[0-9])?$/;
+    const expYearsRegex = /^(0\.[1-9]|[1-9]|[1-3][0-9]|40)(\.\d)?$/;
     const uanRegex = /^\d{12}$/;
     const pfRegex = /^[A-Z0-9]{17}$/;
     const schoolRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
@@ -1041,37 +1040,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 
     const now = new Date();
-    const currentYear = now.getFullYear();
+    const indiaOffset = 330;
+    const indiaNow = new Date(now.getTime() + (indiaOffset - now.getTimezoneOffset()) * 60000);
+    const currentYear = indiaNow.getFullYear();
 
-    // Check server health on page load
-    async function checkServerHealth() {
-        try {
-            const response = await fetch(HEALTH_ENDPOINT);
-            if (!response.ok) {
-                console.error('Server health check failed:', response.status, response.statusText);
-                alert('Server is not responding. Please ensure the backend is running on http://localhost:3000.');
-            } else {
-                console.log('Server health check passed:', await response.json());
-            }
-        } catch (error) {
-            console.error('Health check error:', error.message);
-            alert('Unable to connect to the server. Please check if the backend is running on http://localhost:3000.');
-        }
-    }
-    checkServerHealth();
-
-    // Set date constraints
     const joiningDateInput = document.getElementById('emp_joining_date');
-    const sixMonthsLater = new Date(now);
+    const sixMonthsLater = new Date(indiaNow);
     sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
-    joiningDateInput.min = formatDateForInput(now);
+    joiningDateInput.min = formatDateForInput(indiaNow);
     joiningDateInput.max = formatDateForInput(sixMonthsLater);
-    joiningDateInput.value = formatDateForInput(now);
+    joiningDateInput.value = formatDateForInput(indiaNow);
 
     const dobInput = document.getElementById('emp_dob');
-    const minDobDate = new Date(now);
+    const minDobDate = new Date(indiaNow);
     minDobDate.setFullYear(minDobDate.getFullYear() - 60);
-    const maxDobDate = new Date(now);
+    const maxDobDate = new Date(indiaNow);
     maxDobDate.setFullYear(maxDobDate.getFullYear() - 20);
     dobInput.max = formatDateForInput(maxDobDate);
     dobInput.min = formatDateForInput(minDobDate);
@@ -1139,38 +1122,112 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function cleanGradeInput(input) {
-        let value = input.value.replace(/[^0-9.%]/g, '');
-        value = value.replace(/%/g, '');
-        value = value.replace(/(\..*?)\..*/g, '$1');
-        if (value.endsWith('.')) {
-            value = value.substring(0, 6);
-            input.value = value;
-            return value;
-        }
-        const numericValue = parseFloat(value);
-        if (!isNaN(numericValue)) {
-            if (numericValue >= 10 || value.includes('%')) {
-                if (numericValue > 100) value = '100';
-                else if (numericValue < 4) value = '4';
-                if (!input.value.includes('%')) value += '%';
+    let value = input.value;
+    
+    // Remove all characters except digits, decimal point, and %
+    value = value.replace(/[^0-9.%]/g, '');
+    
+    // Handle percentage sign - only allow at the end
+    const hasPercentage = value.includes('%');
+    value = value.replace(/%/g, '');
+    
+    // Handle multiple decimal points
+    const parts = value.split('.');
+    if (parts.length > 2) {
+        value = parts[0] + '.' + parts[1];
+    } else if (parts.length === 2) {
+        // Limit to 2 decimal places
+        value = parts[0] + '.' + parts[1].slice(0, 2);
+    }
+    
+    // Remove leading zeros except for single zero before decimal
+    if (value.length > 1 && value[0] === '0' && value[1] !== '.') {
+        value = value.substring(1);
+    }
+    
+    // Parse the numeric value
+    const numericValue = parseFloat(value);
+    
+    if (!isNaN(numericValue)) {
+        // Determine if this is a percentage (>=10 or has % sign)
+        const isPercentage = numericValue >= 10 || hasPercentage;
+        
+        if (isPercentage) {
+            // Handle percentage values (4% to 100%)
+            if (numericValue > 100) {
+                value = '100';
+            } else if (numericValue < 4) {
+                value = '4';
             } else {
-                if (numericValue > 10) value = '10';
-                else if (numericValue < 4) value = '4';
+                // Format with 2 decimal places for percentages
+                value = numericValue.toFixed(2);
+            }
+            // Add % sign back if it was there or if value >=10
+            value += '%';
+        } else {
+            // Handle CGPA values (4.0 to 10.0)
+            if (numericValue > 10) {
+                value = '10.00';
+            } else if (numericValue < 4) {
+                value = '4.00';
+            } else {
+                // Format with 2 decimal places for CGPA
+                value = numericValue.toFixed(2);
             }
         }
-        value = value.substring(0, 6);
-        input.value = value;
-        return value;
     }
+    
+    // Limit total length
+    value = value.substring(0, 6);
+    input.value = value;
+    return value;
+}
 
-    function cleanExperienceYears(input) {
-        let value = input.value.replace(/[^0-9.]/g, '');
-        value = value.replace(/(\..*?)\..*/g, '$1');
-        value = value.substring(0, 5);
-        input.value = value;
-        return value;
+function cleanExperienceYears(input) {
+    let value = input.value;
+    
+    // Remove all characters except digits and decimal point
+    value = value.replace(/[^0-9.]/g, '');
+    
+    // Handle multiple decimal points
+    const parts = value.split('.');
+    if (parts.length > 2) {
+        value = parts[0] + '.' + parts[1];
+    } else if (parts.length === 2) {
+        // Limit to 1 decimal place for experience years
+        value = parts[0] + '.' + parts[1].slice(0, 1);
     }
-
+    
+    // Remove leading zeros except for single zero before decimal
+    if (value.length > 1 && value[0] === '0' && value[1] !== '.') {
+        value = value.substring(1);
+    }
+    
+    // Parse the numeric value
+    const numericValue = parseFloat(value);
+    
+    if (!isNaN(numericValue)) {
+        // Validate range (0.1 to 40)
+        if (numericValue > 40) {
+            value = '40';
+        } else if (numericValue < 0.1) {
+            value = '0.1';
+        } else if (numericValue < 1 && parts.length === 1) {
+            // If value is between 0.1 and 1 but user hasn't entered decimal
+            value = '0.1';
+        } else {
+            // Format with 1 decimal place if needed
+            if (parts.length === 2) {
+                value = numericValue.toFixed(1);
+            }
+        }
+    }
+    
+    // Limit total length
+    value = value.substring(0, 5);
+    input.value = value;
+    return value;
+}
     const experienceStatus = document.getElementById('emp_experience_status');
     const experienceFields = document.getElementById('experienceFields');
 
@@ -1231,7 +1288,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="form-col">
                         <label for="emp_years_of_experience_${index}" class="required">Years of Experience</label>
                         <div class="form-group">
-                            <input type="number" id="emp_years_of_experience_${index}" name="emp_years_of_experience_${index}" placeholder="Years of Experience" min="0.1" max="40" step="0.1" required>
+                            <input type="text" id="emp_years_of_experience_${index}" name="emp_years_of_experience_${index}" placeholder="Years of Experience" required>
                             <div id="emp_exp-years-error-${index}" class="validation-message">Please enter valid years (0.1-40)</div>
                         </div>
                     </div>
@@ -1457,59 +1514,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function renumberEducationSections() {
         const educationItems = document.querySelectorAll('.education-item');
         educationItems.forEach((item, index) => {
-            const newIndex = index + 1;
+            const newIndex = index + 4;
             item.id = `education${newIndex}`;
-            const h4 = item.querySelector('h4');
-            if (newIndex <= 3) {
-                h4.textContent = ['SSC (10th Grade)', 'Intermediate/Diploma', 'Graduation'][newIndex - 1];
-            } else {
-                h4.textContent = `Additional Education ${newIndex - 2}`;
-            }
+            item.querySelector('h4').textContent = `Additional Education ${newIndex - 2}`;
             
             const inputs = item.querySelectorAll('input, select, textarea');
             inputs.forEach(input => {
                 const oldId = input.id;
                 const baseId = oldId.replace(/_\d+$/, '');
-                if (newIndex <= 3) {
-                    const baseNames = {
-                        'extra_college_': ['ssc_school', 'inter_college', 'grad_college'][newIndex - 1],
-                        'extra_year_': ['ssc_year', 'inter_year', 'grad_year'][newIndex - 1],
-                        'extra_grade_': ['ssc_grade', 'inter_grade', 'grad_grade'][newIndex - 1],
-                        'extra_degree_': ['', '', 'grad_degree'][newIndex - 1],
-                        'extra_branch_': ['', 'inter_branch', 'grad_branch'][newIndex - 1],
-                        'emp_extra_doc_': ['emp_ssc_doc', 'emp_inter_doc', 'emp_grad_doc'][newIndex - 1]
-                    };
-                    const newBase = Object.keys(baseNames).find(key => input.id.startsWith(key));
-                    if (newBase) {
-                        input.id = baseNames[newBase];
-                        input.name = baseNames[newBase];
-                    }
-                } else {
-                    input.id = `${baseId}_${newIndex}`;
-                    input.name = `${baseId}_${newIndex}`;
-                }
+                input.id = `${baseId}_${newIndex}`;
+                input.name = `${baseId}_${newIndex}`;
             });
 
             const errorMessages = item.querySelectorAll('.validation-message');
             errorMessages.forEach(error => {
                 const oldId = error.id;
                 const baseId = oldId.replace(/-\d+$/, '');
-                if (newIndex <= 3) {
-                    const errorBaseNames = {
-                        'extra-college-error-': ['ssc-school-error', 'inter_college-error', 'grad_college-error'][newIndex - 1],
-                        'extra-year-error-': ['ssc_year-error', 'inter_year-error', 'grad_year-error'][newIndex - 1],
-                        'extra-grade-error-': ['ssc_grade-error', 'inter_grade-error', 'grad_grade-error'][newIndex - 1],
-                        'extra-degree-error-': ['', '', 'grad_degree-error'][newIndex - 1],
-                        'extra-branch-error-': ['', 'inter_branch-error', 'grad_branch-error'][newIndex - 1],
-                        'extra-error-': ['ssc-error', 'inter-error', 'grad-error'][newIndex - 1]
-                    };
-                    const newErrorBase = Object.keys(errorBaseNames).find(key => error.id.startsWith(key));
-                    if (newErrorBase) {
-                        error.id = errorBaseNames[newErrorBase];
-                    }
-                } else {
-                    error.id = `${baseId}-${newIndex}`;
-                }
+                error.id = `${baseId}-${newIndex}`;
             });
 
             const removeBtn = item.querySelector('.remove-education');
@@ -1530,12 +1551,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 startDateInput.min = formatDateForInput(minStartDate);
             }
             
-            endDateInput.max = formatDateForInput(now);
+            endDateInput.max = formatDateForInput(indiaNow);
             
             if (index > 1) {
                 const prevEndDateInput = document.getElementById(`emp_end_date_${index - 1}`);
                 if (prevEndDateInput.value) {
-                    startDateInput.max = prevEndDateInput.value;
+                    startDateInput.min = prevEndDateInput.value;
                 }
             }
         }
@@ -1565,222 +1586,230 @@ document.addEventListener('DOMContentLoaded', function() {
                 case 'emp_email':
                 case 'primary_contact_email':
                 case 'secondary_contact_email':
-                    isValid = emailRegex.test(input.value) && input.value.length >= 5 && input.value.length <= 60;
-                    errorMessage = 'Please enter a valid email address (e.g., example@gmail.com)';
+                    isValid = emailRegex.test(input.value);
+                    errorMessage = 'Please enter a valid email address (e.g., user@gmail.com)';
                     break;
                 case 'emp_mobile':
                 case 'emp_alt_mobile':
                 case 'primary_contact_mobile':
                 case 'secondary_contact_mobile':
-                    const cleanedMobile = cleanNumericInput(input);
-                    isValid = mobileRegex.test(cleanedMobile);
-                    errorMessage = 'Mobile number must be 10 digits starting with 6, 7, 8, or 9';
+                    isValid = mobileRegex.test(input.value);
+                    errorMessage = 'Please enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
+                    
+                    if (isValid) {
+                        const mobileNumbers = [
+                            document.getElementById('emp_mobile').value,
+                            document.getElementById('emp_alt_mobile').value,
+                            document.getElementById('primary_contact_mobile').value,
+                            document.getElementById('secondary_contact_mobile').value
+                        ];
+                        const count = mobileNumbers.filter(num => num === input.value).length;
+                        if (count > 1) {
+                            isValid = false;
+                            errorMessage = 'This mobile number is already used for another field';
+                        }
+                    }
                     break;
                 case 'emp_dob':
                     const dob = new Date(input.value);
-                    const maxDob = new Date(now);
-                    maxDob.setFullYear(maxDob.getFullYear() - 20);
-                    isValid = dob <= maxDob && dob >= new Date(input.min);
-                    errorMessage = 'Employee must be at least 20 years old and not older than 60';
+                    const minDob = new Date(dobInput.min);
+                    const maxDob = new Date(dobInput.max);
+                    isValid = dob >= minDob && dob <= maxDob;
+                    errorMessage = 'Employee must be between 20 and 60 years old';
                     break;
                 case 'emp_gender':
                 case 'emp_marital_status':
-                case 'primary_contact_relation':
-                case 'secondary_contact_relation':
-                case 'emp_state':
                 case 'emp_job_role':
                 case 'emp_department':
                 case 'emp_experience_status':
+                case 'primary_contact_relation':
+                case 'secondary_contact_relation':
+                case 'emp_state':
                     isValid = input.value !== '';
-                    errorMessage = `Please select a ${input.labels[0]?.textContent.toLowerCase() || 'value'}`;
-                    break;
-                case 'emp_profile_pic':
-                    const profilePicFile = input.files[0];
-                    if (profilePicFile) {
-                        isValid = imageRegex.test(profilePicFile.name) && profilePicFile.size <= 2 * 1024 * 1024;
-                        errorMessage = 'Please upload a profile picture (JPG/PNG, max 2MB)';
-                    } else {
-                        isValid = false;
-                        errorMessage = 'Profile picture is required';
-                    }
+                    errorMessage = `Please select a ${input.labels[0].textContent.toLowerCase()}`;
                     break;
                 case 'emp_aadhaar':
-                    const cleanedAadhaar = cleanNumericInput(input);
-                    isValid = aadhaarRegex.test(cleanedAadhaar);
+                    isValid = aadhaarRegex.test(input.value);
                     errorMessage = 'Aadhaar must be exactly 12 digits';
                     break;
                 case 'emp_pan':
-                    const cleanedPan = cleanCodeInput(input, /[^A-Z0-9]/g);
-                    isValid = panRegex.test(cleanedPan);
+                    isValid = panRegex.test(input.value);
                     errorMessage = 'PAN must be 10 alphanumeric characters (e.g., ABCDE1234F)';
                     break;
                 case 'emp_address':
-                    const cleanedAddress = cleanAddressInput(input);
-                    isValid = addressRegex.test(cleanedAddress) && cleanedAddress.length >= 5 && cleanedAddress.length <= 80;
-                    errorMessage = 'Address must be 5-80 characters (alphanumeric, spaces, and ,.-/# allowed)';
+                    isValid = addressRegex.test(input.value) && input.value.length >= 5 && input.value.length <= 80;
+                    errorMessage = 'Address must be 5-80 characters with letters, numbers, and allowed symbols';
                     break;
                 case 'emp_city':
-                    const cleanedCity = cleanLetterInput(input);
-                    isValid = cityRegex.test(cleanedCity) && cleanedCity.length >= 3 && cleanedCity.length <= 60;
-                    errorMessage = 'Please enter a valid city name (3-60 alphabetic characters)';
+                    isValid = cityRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Please enter a valid city name';
                     break;
                 case 'emp_zipcode':
-                    const cleanedZip = cleanNumericInput(input);
-                    isValid = zipRegex.test(cleanedZip);
+                    isValid = zipRegex.test(input.value);
                     errorMessage = 'Please enter a valid 6-digit zip code';
                     break;
                 case 'emp_bank':
-                    const cleanedBank = cleanLetterInput(input);
-                    isValid = bankRegex.test(cleanedBank) && cleanedBank.length >= 3 && cleanedBank.length <= 60;
-                    errorMessage = 'Please enter a valid bank name (3-60 alphabetic characters)';
+                case 'emp_bank_branch':
+                    isValid = bankRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Must be 3-60 alphabetic characters with single spaces';
                     break;
                 case 'emp_account':
-                    const cleanedAccount = cleanNumericInput(input);
-                    isValid = accountRegex.test(cleanedAccount);
-                    errorMessage = 'Account number must be 9-18 digits and cannot be all zeros';
+                    isValid = accountRegex.test(input.value);
+                    errorMessage = 'Account number must be 9-18 digits';
                     break;
                 case 'emp_ifsc':
-                    const cleanedIfsc = cleanCodeInput(input, /[^A-Z0-9]/g);
-                    isValid = ifscRegex.test(cleanedIfsc);
+                    isValid = ifscRegex.test(input.value);
                     errorMessage = 'Please enter a valid IFSC code (e.g., ABCD0123456)';
-                    break;
-                case 'emp_bank_branch':
-                    const cleanedBranch = cleanLetterInput(input);
-                    isValid = bankBranchRegex.test(cleanedBranch) && cleanedBranch.length >= 3 && cleanedBranch.length <= 60;
-                    errorMessage = 'Please enter a valid branch location (3-60 alphabetic characters)';
                     break;
                 case 'emp_joining_date':
                     const joiningDate = new Date(input.value);
-                    isValid = joiningDate >= now && joiningDate <= new Date(input.max);
+                    const minJoining = new Date(joiningDateInput.min);
+                    const maxJoining = new Date(joiningDateInput.max);
+                    isValid = joiningDate >= minJoining && joiningDate <= maxJoining;
                     errorMessage = 'Joining date must be today or within the next 6 months';
                     break;
-                default:
-                    if (input.id.startsWith('emp_company_name_')) {
-                        const cleanedCompany = cleanLetterInput(input);
-                        isValid = companyRegex.test(cleanedCompany) && cleanedCompany.length >= 3 && cleanedCompany.length <= 60;
-                        errorMessage = 'Company name must be 3-60 characters (alphabetic, spaces, and hyphens allowed)';
-                    } else if (input.id.startsWith('emp_years_of_experience_')) {
-                        const cleanedExp = cleanExperienceYears(input);
-                        isValid = expYearsRegex.test(cleanedExp);
-                        errorMessage = 'Please enter valid years (0.1-40)';
-                    } else if (input.id.startsWith('emp_start_date_')) {
+                case 'emp_company_name_1':
+                case 'emp_company_name_2':
+                case 'emp_company_name_3':
+                    isValid = companyRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Company name must be 3-60 characters';
+                    break;
+                case 'emp_years_of_experience_1':
+                case 'emp_years_of_experience_2':
+                case 'emp_years_of_experience_3':
+                const expValue = parseFloat(input.value);
+    isValid = !isNaN(expValue) && expValue >= 0.1 && expValue <= 40;
+    errorMessage = 'Please enter valid years (0.1-40) with max 1 decimal place';
+    break;
+                case 'emp_start_date_1':
+                case 'emp_start_date_2':
+                case 'emp_start_date_3':
+                    const sscYear = document.getElementById('ssc_year').value;
+                    if (sscYear && yearRegex.test(sscYear)) {
+                        const minStart = new Date(parseInt(sscYear) + 1, 0, 1);
                         const startDate = new Date(input.value);
-                        const sscYear = document.getElementById('ssc_year').value;
-                        let minDate = new Date(input.min);
-                        if (sscYear && yearRegex.test(sscYear)) {
-                            minDate = new Date(parseInt(sscYear) + 1, 0, 1);
-                        }
-                        isValid = startDate >= minDate;
-                        if (input.max) {
-                            const maxDate = new Date(input.max);
-                            isValid = isValid && startDate <= maxDate;
-                        }
-                        errorMessage = input.id.includes('_1') 
-                            ? 'Start date must be after SSC completion'
-                            : 'Start date must be after SSC completion and before the previous employment\'s end date';
-                    } else if (input.id.startsWith('emp_end_date_')) {
-                        const endDate = new Date(input.value);
-                        const startDateInput = document.getElementById(input.id.replace('end_date', 'start_date'));
-                        const startDate = startDateInput ? new Date(startDateInput.value) : null;
-                        isValid = endDate <= new Date(input.max);
-                        if (startDate) {
-                            const oneMonthLater = new Date(startDate);
-                            oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
-                            isValid = isValid && endDate >= oneMonthLater;
-                        }
-                        errorMessage = 'End date must be at least 1 month after start date and not in the future';
-                    } else if (input.id.startsWith('emp_uan_')) {
-                        const cleanedUan = cleanNumericInput(input);
-                        isValid = uanRegex.test(cleanedUan);
-                        errorMessage = 'UAN must be exactly 12 digits';
-                    } else if (input.id.startsWith('emp_pf_')) {
-                        const cleanedPf = cleanCodeInput(input, /[^A-Z0-9]/g);
-                        isValid = pfRegex.test(cleanedPf);
-                        errorMessage = 'PF number must be 17 alphanumeric characters';
-                    } else if (input.id.startsWith('emp_offer_letter_') || input.id.startsWith('emp_relieving_letter_') || input.id.startsWith('emp_experience_certificate_')) {
-                        const file = input.files[0];
-                        if (file) {
-                            isValid = pdfRegex.test(file.name) && file.size <= 2 * 1024 * 1024;
-                            errorMessage = `Please upload your ${input.labels[0].textContent.toLowerCase()} (PDF only, max 2MB)`;
-                        } else if (input.required) {
-                            isValid = false;
-                            errorMessage = `Please upload your ${input.labels[0].textContent.toLowerCase()} (PDF only, max 2MB)`;
-                        }
-                    } else if (input.id === 'ssc_school' || input.id === 'inter_college' || input.id === 'grad_college' || input.id.startsWith('extra_college_')) {
-                        const cleanedSchool = cleanLetterInput(input);
-                        isValid = schoolRegex.test(cleanedSchool) && cleanedSchool.length >= 3 && cleanedSchool.length <= 60;
-                        errorMessage = 'School/College name must be 3-60 alphabetic characters';
-                    } else if (input.id === 'ssc_year' || input.id === 'inter_year' || input.id === 'grad_year' || input.id.startsWith('extra_year_')) {
-                        const cleanedYear = cleanNumericInput(input);
-                        isValid = yearRegex.test(cleanedYear);
-                        if (isValid && input.id === 'ssc_year') {
-                            const sscYear = parseInt(cleanedYear);
-                            isValid = sscYear <= currentYear && sscYear >= currentYear - 50;
-                            updateExperienceDateConstraints(1);
-                            for (let i = 2; i <= experienceCount; i++) {
-                                updateExperienceDateConstraints(i);
-                            }
-                        } else if (isValid && input.id === 'inter_year') {
-                            const interYear = parseInt(cleanedYear);
-                            const sscYear = parseInt(document.getElementById('ssc_year').value || '0');
-                            isValid = interYear >= sscYear + 2 && interYear <= currentYear;
-                        } else if (isValid && input.id === 'grad_year') {
-                            const gradYear = parseInt(cleanedYear);
-                            const interYear = parseInt(document.getElementById('inter_year').value || '0');
-                            isValid = gradYear >= interYear + 2 && gradYear <= currentYear;
-                        } else if (isValid && input.id.startsWith('extra_year_')) {
-                            const extraYear = parseInt(cleanedYear);
-                            const gradYear = parseInt(document.getElementById('grad_year').value || '0');
-                            isValid = extraYear >= gradYear && extraYear <= currentYear;
-                        }
-                        errorMessage = 'Please enter a valid year';
-                    } else if (input.id === 'ssc_grade' || input.id === 'inter_grade' || input.id === 'grad_grade' || input.id.startsWith('extra_grade_')) {
-                        const cleanedGrade = cleanGradeInput(input);
-                        const gradeValue = parseFloat(cleanedGrade.replace('%', ''));
-                        isValid = !isNaN(gradeValue) && (
-                            (cleanedGrade.includes('%') && gradeValue >= 4 && gradeValue <= 100) ||
-                            (!cleanedGrade.includes('%') && gradeValue >= 4 && gradeValue <= 10)
-                        );
-                        errorMessage = 'Percentage must be 4-100% or CGPA 4.0-10.0';
-                    } else if (input.id === 'grad_degree' || input.id.startsWith('extra_degree_')) {
-                        const cleanedDegree = cleanLetterInput(input);
-                        isValid = degreeRegex.test(cleanedDegree) && cleanedDegree.length >= 3 && cleanedDegree.length <= 30;
-                        errorMessage = 'Degree must be 3-30 alphabetic characters';
-                    } else if (input.id === 'inter_branch' || input.id === 'grad_branch' || input.id.startsWith('extra_branch_')) {
-                        const cleanedBranch = cleanLetterInput(input);
-                        isValid = branchRegex.test(cleanedBranch) && cleanedBranch.length >= 3 && cleanedBranch.length <= 30;
-                        errorMessage = 'Branch must be 3-30 alphabetic characters';
-                    } else if (input.id === 'emp_ssc_doc' || input.id === 'emp_inter_doc' || input.id === 'emp_grad_doc' || input.id.startsWith('emp_extra_doc_')) {
-                        const file = input.files[0];
-                        if (file) {
-                            isValid = pdfRegex.test(file.name) && file.size <= 2 * 1024 * 1024;
-                            errorMessage = 'Only PDF file (max 2MB)';
-                        } else {
-                            isValid = false;
-                            errorMessage = 'Please upload your certificate (PDF only, max 2MB)';
-                        }
-                    } else if (input.id === 'resume' || input.id === 'signed_document') {
-                        const file = input.files[0];
-                        if (file) {
-                            isValid = pdfRegex.test(file.name) && file.size <= 2 * 1024 * 1024;
-                            errorMessage = 'Only PDF file (max 2MB)';
-                        } else {
-                            isValid = false;
-                            errorMessage = 'Please upload your document (PDF only, max 2MB)';
-                        }
-                    } else if (input.id === 'id_proof') {
-                        const file = input.files[0];
-                        if (file) {
-                            isValid = (pdfRegex.test(file.name) || imageRegex.test(file.name)) && file.size <= 2 * 1024 * 1024;
-                            errorMessage = 'Only PDF, JPG, or PNG files (max 2MB)';
-                        } else {
-                            isValid = false;
-                            errorMessage = 'Please upload your ID proof (PDF/JPG/PNG, max 2MB)';
-                        }
-                    } else if (input.id === 'emp_terms_accepted') {
-                        isValid = input.checked;
-                        errorMessage = 'You must accept the terms and conditions';
+                        isValid = startDate >= minStart && startDate <= indiaNow;
+                        errorMessage = 'Start date must be after SSC completion and not in the future';
                     }
+                    break;
+                case 'emp_end_date_1':
+                case 'emp_end_date_2':
+                case 'emp_end_date_3':
+                    const index = input.id.split('_').pop();
+                    const startDateInput = document.getElementById(`emp_start_date_${index}`);
+                    if (startDateInput.value) {
+                        const startDate = new Date(startDateInput.value);
+                        const endDate = new Date(input.value);
+                        const minEndDate = new Date(startDate);
+                        minEndDate.setMonth(minEndDate.getMonth() + 1);
+                        isValid = endDate >= minEndDate && endDate <= indiaNow;
+                        
+                        if (index > 1) {
+                            const nextStartDateInput = document.getElementById(`emp_start_date_${parseInt(index) + 1}`);
+                            if (nextStartDateInput && nextStartDateInput.value) {
+                                isValid = isValid && endDate <= new Date(nextStartDateInput.value);
+                                errorMessage = 'End date must be before next employment start date';
+                            }
+                        } else {
+                            errorMessage = 'End date must be at least 1 month after start date and not in the future';
+                        }
+                    }
+                    break;
+                case 'emp_uan_1':
+                case 'emp_uan_2':
+                case 'emp_uan_3':
+                    isValid = uanRegex.test(input.value);
+                    errorMessage = 'UAN must be exactly 12 digits';
+                    break;
+                case 'emp_pf_1':
+                case 'emp_pf_2':
+                case 'emp_pf_3':
+                    isValid = pfRegex.test(input.value);
+                    errorMessage = 'PF number must be 17 alphanumeric characters';
+                    break;
+                case 'ssc_school':
+                case 'inter_college':
+                case 'grad_college':
+                case 'extra_college_4':
+                case 'extra_college_5':
+                    isValid = schoolRegex.test(input.value) && input.value.length >= 3 && input.value.length <= 60;
+                    errorMessage = 'Name must be 3-60 alphabetic characters with single spaces';
+                    break;
+                case 'ssc_year':
+                    const dobYear = new Date(document.getElementById('emp_dob').value).getFullYear();
+                    isValid = yearRegex.test(input.value) && 
+                              parseInt(input.value) >= (dobYear + 12) && 
+                              parseInt(input.value) <= currentYear;
+                    errorMessage = `SSC year must be at least 12 years after birth (${dobYear + 12}-${currentYear})`;
+                    break;
+                case 'inter_year':
+                    const sscYearVal = document.getElementById('ssc_year').value;
+                    isValid = yearRegex.test(input.value) && 
+                              parseInt(input.value) <= currentYear;
+                    if (sscYearVal && yearRegex.test(sscYearVal)) {
+                        isValid = isValid && parseInt(input.value) >= (parseInt(sscYearVal) + 2);
+                        errorMessage = `Year must be at least 2 years after SSC (${parseInt(sscYearVal) + 2}-${currentYear})`;
+                    }
+                    break;
+                case 'grad_year':
+                    const interYearVal = document.getElementById('inter_year').value;
+                    isValid = yearRegex.test(input.value) && 
+                              parseInt(input.value) <= (currentYear + 2);
+                    if (interYearVal && yearRegex.test(interYearVal)) {
+                        isValid = isValid && parseInt(input.value) >= (parseInt(interYearVal) + 3);
+                        errorMessage = `Year must be at least 3 years after Intermediate (${parseInt(interYearVal) + 3}-${currentYear + 2})`;
+                    }
+                    break;
+                case 'extra_year_4':
+                case 'extra_year_5':
+                    const gradYearVal = document.getElementById('grad_year').value;
+                    isValid = yearRegex.test(input.value) && 
+                              parseInt(input.value) <= (currentYear + 2);
+                    if (gradYearVal && yearRegex.test(gradYearVal)) {
+                        isValid = isValid && parseInt(input.value) >= parseInt(gradYearVal);
+                        errorMessage = `Year must be after graduation (${gradYearVal}-${currentYear + 2})`;
+                    }
+                    break;
+                case 'ssc_grade':
+                case 'inter_grade':
+                case 'grad_grade':
+                case 'extra_grade_4':
+                case 'extra_grade_5':
+                    let value = input.value.replace(/%/g, '');
+                    const numericValue = parseFloat(value);
+                    const isPercentage = numericValue >= 10 || input.value.includes('%');
+                    if (isPercentage) {
+                        isValid = numericValue >= 4 && numericValue <= 100;
+                        errorMessage = 'Percentage must be between 4% and 100%';
+                        if (isValid && !input.value.includes('%')) {
+                            input.value = numericValue + '%';
+                        }
+                    } else {
+                        isValid = numericValue >= 4 && numericValue <= 10;
+                        errorMessage = 'CGPA must be between 4.0 and 10.0';
+                    }
+                    break;
+                case 'inter_branch':
+                case 'grad_branch':
+                case 'extra_branch_4':
+                case 'extra_branch_5':
+                    isValid = branchRegex.test(input.value) && 
+                              input.value.length >= 3 && 
+                              input.value.length <= 30;
+                    errorMessage = 'Branch must be 3-30 alphabetic characters with single spaces';
+                    break;
+                case 'grad_degree':
+                case 'extra_degree_4':
+                case 'extra_degree_5':
+                    isValid = degreeRegex.test(input.value) && 
+                              input.value.length >= 3 && 
+                              input.value.length <= 30;
+                    errorMessage = 'Degree must be 3-30 alphabetic characters with single spaces';
+                    break;
+                case 'emp_terms_accepted':
+                    isValid = input.checked;
+                    errorMessage = 'You must accept the terms and conditions';
+                    break;
             }
         }
 
@@ -1794,10 +1823,91 @@ document.addEventListener('DOMContentLoaded', function() {
             error.textContent = errorMessage;
             error.classList.add('visible');
         }
-
         return isValid;
     }
 
+    function validateFileInput(input, allowedTypes, maxSizeMB) {
+        const errorId = `${input.id}-error`;
+        const error = document.getElementById(errorId);
+        if (!error) return true;
+    
+        let isValid = true;
+        let errorMessage = '';
+    
+        if (input.required && !input.files.length) {
+            isValid = false;
+            errorMessage = `Please upload a ${input.labels[0].textContent.toLowerCase()}`;
+        } else if (input.files.length) {
+            const file = input.files[0];
+            const fileSizeMB = file.size / (1024 * 1024);
+            const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+    
+            if (!allowedTypes.includes(fileExt)) {
+                isValid = false;
+                errorMessage = `Only ${allowedTypes.join(', ')} files allowed`;
+            } else if (fileSizeMB > maxSizeMB) {
+                isValid = false;
+                errorMessage = `File size must not exceed ${maxSizeMB}MB`;
+            }
+        }
+    
+        if (isValid) {
+            input.classList.remove('invalid');
+            input.classList.add('valid');
+            error.classList.remove('visible');
+        } else {
+            input.classList.remove('valid');
+            input.classList.add('invalid');
+            error.textContent = errorMessage;
+            error.classList.add('visible');
+        }
+        return isValid;
+    }
+    
+    function validateSSCDoc() {
+        return validateFileInput(document.getElementById('emp_ssc_doc'), ['.pdf'], 2);
+    }
+    
+    function validateInterDoc() {
+        return validateFileInput(document.getElementById('emp_inter_doc'), ['.pdf'], 2);
+    }
+    
+    function validateGradDoc() {
+        return validateFileInput(document.getElementById('emp_grad_doc'), ['.pdf'], 2);
+    }
+    
+    function validateExtraDoc(index) {
+        return validateFileInput(document.getElementById(`emp_extra_doc_${index}`), ['.pdf'], 2);
+    }
+    
+    function validateProfilePic() {
+        return validateFileInput(document.getElementById('emp_profile_pic'), ['.jpg', '.jpeg', '.png'], 2);
+    }
+    
+    function validateOfferLetter(index) {
+        return validateFileInput(document.getElementById(`emp_offer_letter_${index}`), ['.pdf'], 2);
+    }
+    
+    function validateRelievingLetter(index) {
+        return validateFileInput(document.getElementById(`emp_relieving_letter_${index}`), ['.pdf'], 2);
+    }
+    
+    function validateExperienceCert(index) {
+        return validateFileInput(document.getElementById(`emp_experience_certificate_${index}`), ['.pdf'], 2);
+    }
+    
+    function validateResume() {
+        return validateFileInput(document.getElementById('resume'), ['.pdf'], 2);
+    }
+    
+    function validateIdProof() {
+        return validateFileInput(document.getElementById('id_proof'), ['.pdf', '.jpg', '.jpeg', '.png'], 2);
+    }
+    
+    function validateSignedDoc() {
+        return validateFileInput(document.getElementById('signed_document'), ['.pdf'], 2);
+    }
+    
     function addEventListenersForExperience(index) {
         const fields = [
             `emp_company_name_${index}`,
@@ -1810,53 +1920,32 @@ document.addEventListener('DOMContentLoaded', function() {
             `emp_relieving_letter_${index}`,
             `emp_experience_certificate_${index}`
         ];
-
         fields.forEach(fieldId => {
             const input = document.getElementById(fieldId);
             if (input) {
-                if (fieldId.includes('company_name')) {
-                    input.addEventListener('input', () => cleanLetterInput(input));
-                } else if (fieldId.includes('years_of_experience')) {
-                    input.addEventListener('input', () => cleanExperienceYears(input));
-                } else if (fieldId.includes('uan')) {
-                    input.addEventListener('input', () => cleanNumericInput(input));
-                } else if (fieldId.includes('pf')) {
-                    input.addEventListener('input', () => cleanCodeInput(input, /[^A-Z0-9]/g));
+                if (input.type === 'file') {
+                    input.addEventListener('change', () => {
+                        if (fieldId.includes('offer_letter')) {
+                            validateOfferLetter(index);
+                        } else if (fieldId.includes('relieving_letter')) {
+                            validateRelievingLetter(index);
+                        } else if (fieldId.includes('experience_certificate')) {
+                            validateExperienceCert(index);
+                        }
+                    });
+                } else {
+                    input.addEventListener('input', () => {
+                        validateField(input);
+                        if (fieldId.includes('start_date') || fieldId.includes('end_date')) {
+                            updateExperienceDateConstraints(index);
+                        }
+                    });
+                    input.addEventListener('blur', () => validateField(input));
                 }
-
-                input.addEventListener('blur', () => validateField(input));
-                input.addEventListener('change', () => validateField(input));
             }
         });
-
-        const startDateInput = document.getElementById(`emp_start_date_${index}`);
-        const endDateInput = document.getElementById(`emp_end_date_${index}`);
-        if (startDateInput && endDateInput) {
-            startDateInput.addEventListener('change', () => {
-                validateField(startDateInput);
-                if (endDateInput.value) validateField(endDateInput);
-                if (index < experienceCount) {
-                    const nextStartDateInput = document.getElementById(`emp_start_date_${index + 1}`);
-                    if (nextStartDateInput) {
-                        nextStartDateInput.max = startDateInput.value;
-                        validateField(nextStartDateInput);
-                    }
-                }
-            });
-
-            endDateInput.addEventListener('change', () => {
-                validateField(endDateInput);
-                if (index < experienceCount) {
-                    const nextStartDateInput = document.getElementById(`emp_start_date_${index + 1}`);
-                    if (nextStartDateInput) {
-                        nextStartDateInput.max = endDateInput.value;
-                        validateField(nextStartDateInput);
-                    }
-                }
-            });
-        }
     }
-
+    
     function addEventListenersForEducation(index) {
         const fields = [
             `extra_college_${index}`,
@@ -1866,189 +1955,219 @@ document.addEventListener('DOMContentLoaded', function() {
             `extra_branch_${index}`,
             `emp_extra_doc_${index}`
         ];
-
         fields.forEach(fieldId => {
             const input = document.getElementById(fieldId);
             if (input) {
-                if (fieldId.includes('college') || fieldId.includes('degree') || fieldId.includes('branch')) {
-                    input.addEventListener('input', () => cleanLetterInput(input));
-                } else if (fieldId.includes('year')) {
-                    input.addEventListener('input', () => cleanNumericInput(input));
-                } else if (fieldId.includes('grade')) {
-                    input.addEventListener('input', () => cleanGradeInput(input));
+                if (fieldId.includes('extra_doc')) {
+                    input.addEventListener('change', () => validateExtraDoc(index));
+                } else {
+                    input.addEventListener('input', () => validateField(input));
+                    input.addEventListener('blur', () => validateField(input));
                 }
-
-                input.addEventListener('blur', () => validateField(input));
-                input.addEventListener('change', () => validateField(input));
             }
         });
     }
-
-    const inputs = document.querySelectorAll('input, select');
-    inputs.forEach(input => {
-        if (input.id.includes('name') || input.id.includes('city') || input.id.includes('bank') || input.id.includes('bank_branch')) {
-            input.addEventListener('input', () => cleanLetterInput(input));
-        } else if (input.id.includes('mobile') || input.id.includes('zipcode') || input.id.includes('account') || input.id.includes('aadhaar')) {
-            input.addEventListener('input', () => cleanNumericInput(input));
-        } else if (input.id.includes('email')) {
-            input.addEventListener('input', () => cleanEmail(input));
-        } else if (input.id.includes('ifsc') || input.id.includes('pan')) {
-            input.addEventListener('input', () => cleanCodeInput(input, /[^A-Z0-9]/g));
-        } else if (input.id.includes('address')) {
-            input.addEventListener('input', () => cleanAddressInput(input));
-        } else if (input.id.includes('grade')) {
-            input.addEventListener('input', () => cleanGradeInput(input));
+    
+    // Add event listeners for static fields
+    const inputFields = document.querySelectorAll('input:not([type="file"]), select');
+    inputFields.forEach(input => {
+        if (input.type === 'checkbox') {
+            input.addEventListener('change', () => validateField(input));
+        } else {
+            input.addEventListener('input', () => {
+                if (['emp_name', 'primary_contact_name', 'secondary_contact_name', 'emp_bank', 'emp_bank_branch', 'ssc_school', 'inter_college', 'grad_college', 'extra_college_4', 'extra_college_5', 'emp_company_name_1', 'emp_company_name_2', 'emp_company_name_3', 'inter_branch', 'grad_branch', 'grad_degree', 'extra_branch_4', 'extra_branch_5', 'extra_degree_4', 'extra_degree_5', 'emp_city'].includes(input.id)) {
+                    cleanLetterInput(input);
+                } else if (['emp_address'].includes(input.id)) {
+                    cleanAddressInput(input);
+                } else if (['emp_mobile', 'emp_alt_mobile', 'primary_contact_mobile', 'secondary_contact_mobile', 'emp_aadhaar', 'emp_account', 'emp_uan_1', 'emp_uan_2', 'emp_uan_3', 'ssc_year', 'inter_year', 'grad_year', 'extra_year_4', 'extra_year_5'].includes(input.id)) {
+                    cleanNumericInput(input);
+                } else if (['emp_email', 'primary_contact_email', 'secondary_contact_email'].includes(input.id)) {
+                    cleanEmail(input);
+                } else if (['emp_ifsc', 'emp_pan', 'emp_pf_1', 'emp_pf_2', 'emp_pf_3'].includes(input.id)) {
+                    cleanCodeInput(input, /[^A-Z0-9]/g);
+                } else if (['emp_years_of_experience_1', 'emp_years_of_experience_2', 'emp_years_of_experience_3'].includes(input.id)) {
+                    cleanExperienceYears(input);
+                } else if (['ssc_grade', 'inter_grade', 'grad_grade', 'extra_grade_4', 'extra_grade_5'].includes(input.id)) {
+                    cleanGradeInput(input);
+                }
+                validateField(input);
+            });
+            input.addEventListener('blur', () => validateField(input));
         }
-
-        input.addEventListener('blur', () => validateField(input));
-        input.addEventListener('change', () => validateField(input));
     });
-
-    addEventListenersForExperience(1);
-    [1, 2, 3].forEach(addEventListenersForEducation);
-
-    const form = document.getElementById('onboardingForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const errorSummary = document.getElementById('errorSummary');
-    const errorList = document.getElementById('errorList');
-
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        submitBtn.disabled = true;
-
-        const allInputs = form.querySelectorAll('input, select, textarea');
-        let isValid = true;
-        const errors = [];
-
-        allInputs.forEach(input => {
-            if (!validateField(input)) {
-                isValid = false;
-                const errorMessage = document.getElementById(input.id.match(/_\d+$/) 
-                    ? `${input.id.replace(/_\d+$/, '')}-error${input.id.match(/_\d+$/)[0].replace('_', '-')}`
-                    : `${input.id}-error`)?.textContent || 'Invalid field';
-                errors.push(`${input.labels[0]?.textContent || input.id}: ${errorMessage}`);
+    
+    // Add event listeners for file inputs
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(input => {
+        input.addEventListener('change', () => {
+            switch(input.id) {
+                case 'emp_ssc_doc': validateSSCDoc(); break;
+                case 'emp_inter_doc': validateInterDoc(); break;
+                case 'emp_grad_doc': validateGradDoc(); break;
+                case 'emp_profile_pic': validateProfilePic(); break;
+                case 'resume': validateResume(); break;
+                case 'id_proof': validateIdProof(); break;
+                case 'signed_document': validateSignedDoc(); break;
+                default:
+                    if (input.id.includes('offer_letter')) {
+                        validateOfferLetter(input.id.split('_').pop());
+                    } else if (input.id.includes('relieving_letter')) {
+                        validateRelievingLetter(input.id.split('_').pop());
+                    } else if (input.id.includes('experience_certificate')) {
+                        validateExperienceCert(input.id.split('_').pop());
+                    } else if (input.id.includes('extra_doc')) {
+                        validateExtraDoc(input.id.split('_').pop());
+                    }
             }
         });
+    });
 
-        if (!isValid) {
-            errorList.innerHTML = errors.map(error => `<li>${error}</li>`).join('');
+    // Function to display server errors in the error summary
+    function displayServerErrors(errors) {
+        const errorSummary = document.getElementById('errorSummary');
+        const errorList = document.getElementById('errorList');
+        errorList.innerHTML = '';
+        errorSummary.classList.add('visible');
+        errors.forEach(error => {
+            const li = document.createElement('li');
+            li.textContent = error;
+            errorList.appendChild(li);
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // Form submission
+    const form = document.getElementById('onboardingForm');
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const errorSummary = document.getElementById('errorSummary');
+        const errorList = document.getElementById('errorList');
+        errorList.innerHTML = '';
+        errorSummary.classList.remove('visible');
+    
+        let allValid = true;
+        const errors = [];
+    
+        // Validate all non-file inputs
+        const inputs = form.querySelectorAll('input:not([type="file"]), select');
+        inputs.forEach(input => {
+            if (!validateField(input)) {
+                allValid = false;
+                errors.push(`${input.labels[0]?.textContent || input.id} is invalid`);
+            }
+        });
+    
+        // Validate all file inputs
+        const files = form.querySelectorAll('input[type="file"]');
+        files.forEach(input => {
+            let fileValid = true;
+            switch(input.id) {
+                case 'emp_ssc_doc': fileValid = validateSSCDoc(); break;
+                case 'emp_inter_doc': fileValid = validateInterDoc(); break;
+                case 'emp_grad_doc': fileValid = validateGradDoc(); break;
+                case 'emp_profile_pic': fileValid = validateProfilePic(); break;
+                case 'resume': fileValid = validateResume(); break;
+                case 'id_proof': fileValid = validateIdProof(); break;
+                case 'signed_document': fileValid = validateSignedDoc(); break;
+                default:
+                    if (input.id.includes('offer_letter')) {
+                        fileValid = validateOfferLetter(input.id.split('_').pop());
+                    } else if (input.id.includes('relieving_letter')) {
+                        fileValid = validateRelievingLetter(input.id.split('_').pop());
+                    } else if (input.id.includes('experience_certificate')) {
+                        fileValid = validateExperienceCert(input.id.split('_').pop());
+                    } else if (input.id.includes('extra_doc')) {
+                        fileValid = validateExtraDoc(input.id.split('_').pop());
+                    }
+            }
+            if (!fileValid) {
+                allValid = false;
+                errors.push(`${input.labels[0]?.textContent || input.id} is invalid`);
+            }
+        });
+    
+        if (!allValid) {
             errorSummary.classList.add('visible');
-            submitBtn.disabled = false;
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
-
-        errorSummary.classList.remove('visible');
-
+    
         const formData = new FormData(form);
-        const entries = [...formData.entries()];
-        console.log('FormData entries:', entries);
-
-        const previousEmployments = [];
-        for (let i = 1; i <= experienceCount; i++) {
-            if (document.getElementById(`emp_company_name_${i}`)) {
-                const employment = {
-                    company_name: formData.get(`emp_company_name_${i}`),
-                    years_of_experience: parseFloat(formData.get(`emp_years_of_experience_${i}`)),
-                    start_date: formData.get(`emp_start_date_${i}`),
-                    end_date: formData.get(`emp_end_date_${i}`),
-                    uan_number: formData.get(`emp_uan_${i}`),
-                    pf_number: formData.get(`emp_pf_${i}`),
-                    offer_letter: formData.get(`emp_offer_letter_${i}`),
-                    relieving_letter: formData.get(`emp_relieving_letter_${i}`),
-                    experience_certificate: formData.get(`emp_experience_certificate_${i}`)
-                };
-                previousEmployments.push(employment);
-            }
-        }
-        if (previousEmployments.length > 0) {
-            formData.set('previous_employments', JSON.stringify(previousEmployments));
-        } else {
-            formData.delete('previous_employments');
-        }
-
-        const additionalEducations = [];
-        for (let i = 4; i <= educationCount; i++) {
-            if (document.getElementById(`extra_college_${i}`)) {
-                const education = {
-                    college_name: formData.get(`extra_college_${i}`),
-                    year_of_completion: parseInt(formData.get(`extra_year_${i}`)),
-                    grade: formData.get(`extra_grade_${i}`),
-                    degree: formData.get(`extra_degree_${i}`),
-                    branch: formData.get(`extra_branch_${i}`),
-                    certificate: formData.get(`emp_extra_doc_${i}`)
-                };
-                additionalEducations.push(education);
-            }
-        }
-        if (additionalEducations.length > 0) {
-            formData.set('additional_educations', JSON.stringify(additionalEducations));
-        } else {
-            formData.delete('additional_educations');
-        }
-
         try {
             const response = await fetch(SERVER_ENDPOINT, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                body: formData
             });
-
+            
             const result = await response.json();
+            console.log('Server response:', result);
             if (response.ok) {
-                alert('Form submitted successfully!');
-                form.reset();
-                experienceContainer.innerHTML = initialExperienceHTML;
-                educationContainer.innerHTML = initialEducationHTML;
-                experienceCount = 1;
-                educationCount = 3;
-                addExperienceBtn.disabled = false;
-                addEducationBtn.disabled = false;
-                toggleExperienceFields();
-                allInputs.forEach(input => {
-                    input.classList.remove('valid', 'invalid');
-                    const error = document.getElementById(input.id.match(/_\d+$/) 
-                        ? `${input.id.replace(/_\d+$/, '')}-error${input.id.match(/_\d+$/)[0].replace('_', '-')}`
-                        : `${input.id}-error`);
-                    if (error) error.classList.remove('visible');
-                });
-                joiningDateInput.value = formatDateForInput(now);
-            } else {
-                console.error('Submission failed:', result);
-                let errorMessage = 'Failed to submit the form. ';
-                if (result.error) {
-                    errorMessage += result.error;
-                    if (result.error.includes('duplicate key error')) {
-                        errorMessage = 'Submission failed: Email or Aadhaar already exists.';
-                    } else if (result.error.includes('validation failed')) {
-                        errorMessage = 'Submission failed: Server-side validation error. Please check your inputs.';
-                    }
-                } else {
-                    errorMessage += 'Please try again.';
-                }
-                errorList.innerHTML = `<li>${errorMessage}</li>`;
-                errorSummary.classList.add('visible');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+    alert('Onboarding form submitted successfully!');
+    form.reset();
+    toggleExperienceFields();
+    experienceContainer.innerHTML = initialExperienceHTML;
+    educationContainer.innerHTML = initialEducationHTML;
+    experienceCount = 1;
+    educationCount = 3;
+    addExperienceBtn.disabled = false;
+    addEducationBtn.disabled = true;
+} else {
+    const errorMessages = [];
+    
+    // Check for duplicate Aadhaar
+    if (result.error.includes('Aadhaar already exists')) {
+        const aadhaarInput = document.getElementById('emp_aadhaar');
+        const errorElement = document.getElementById('emp_aadhaar-error');
+        aadhaarInput.classList.add('invalid');
+        aadhaarInput.classList.remove('valid');
+        errorElement.textContent = 'This Aadhaar number is already registered';
+        errorElement.classList.add('visible');
+        errorMessages.push('This Aadhaar number is already registered');
+    }
+    
+    // Check for duplicate PAN
+    if (result.error.includes('PAN already exists')) {
+        const panInput = document.getElementById('emp_pan');
+        const errorElement = document.getElementById('emp_pan-error');
+        panInput.classList.add('invalid');
+        panInput.classList.remove('valid');
+        errorElement.textContent = 'This PAN number is already registered';
+        errorElement.classList.add('visible');
+        errorMessages.push('This PAN number is already registered');
+    }
+    
+    // Check for duplicate Email
+    if (result.error.includes('Email already exists')) {
+        const emailInput = document.getElementById('emp_email');
+        const errorElement = document.getElementById('emp_email-error');
+        emailInput.classList.add('invalid');
+        emailInput.classList.remove('valid');
+        errorElement.textContent = 'This email is already registered';
+        errorElement.classList.add('visible');
+        errorMessages.push('This email is already registered');
+    }
+    
+    // Add any other errors
+    if (result.error && !errorMessages.length) {
+        errorMessages.push(result.error);
+    }
+    
+    // Display all errors at once
+    if (errorMessages.length) {
+        displayServerErrors(errorMessages);
+    }
+}
         } catch (error) {
             console.error('Error submitting form:', error);
-            let errorMessage = 'Failed to submit the form due to a network error. ';
-            if (error.message.includes('Failed to fetch')) {
-                errorMessage += 'Please ensure the backend server is running at http://localhost:3000 and CORS is properly configured.';
-            } else {
-                errorMessage += 'Please check your network connection and try again.';
-            }
-            errorList.innerHTML = `<li>${errorMessage}</li>`;
-            errorSummary.classList.add('visible');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } finally {
-            submitBtn.disabled = false;
+            displayServerErrors(['An error occurred while submitting the form.']);
         }
     });
 });
-</script>
- 
-   </body>
-   </html>
+    </script>
+</body>
+</html>
