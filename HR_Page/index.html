@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -802,6 +801,7 @@
         </div>
     </div>
 
+    
     <!-- Include jsPDF library for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -810,8 +810,11 @@
         let currentEmployee = null;
         let allEmployees = [];
 
+        // Server base URL (configurable)
+        const BASE_URL = 'http://localhost:3000';
+
         // Fetch all employees
-        fetch('http://localhost:3000/employees', {
+        fetch(`${BASE_URL}/employees`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         })
@@ -877,13 +880,6 @@
             const month = (date.getMonth() + 1).toString().padStart(2, '0');
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
-        }
-
-        function maskSensitive(value, showLast = 4) {
-            if (!value) return 'N/A';
-            const len = value.length;
-            if (len <= showLast) return value;
-            return '*'.repeat(len - showLast) + value.slice(-showLast);
         }
 
         function getInitials(name) {
@@ -979,7 +975,7 @@
                 if (!filename) {
                     throw new Error('Could not extract filename from document URL');
                 }
-                const downloadUrl = `http://localhost:3000/download/${filename}`;
+                const downloadUrl = `${BASE_URL}/download/${filename}`;
                 window.open(downloadUrl, '_blank');
             } catch (error) {
                 console.error('Download error:', error);
@@ -1016,21 +1012,28 @@
 
                 // Normalize profile picture URL
                 let profilePicUrl = employee.emp_profile_pic_url;
-                if (profilePicUrl && !profilePicUrl.startsWith('http')) {
-                    profilePicUrl = `http://localhost:3000/${profilePicUrl.startsWith('/') ? profilePicUrl.slice(1) : profilePicUrl}`;
-                }
+                console.log(`Raw profile picture URL for ${employee.emp_name}:`, profilePicUrl);
 
-                // Log profile picture URL for debugging
-                console.log(`Profile picture URL for ${employee.emp_name}: ${profilePicUrl || 'No URL provided'}`);
+                if (profilePicUrl && typeof profilePicUrl === 'string' && profilePicUrl.trim() !== '') {
+                    if (!profilePicUrl.startsWith('http')) {
+                        // Remove leading slash if present and prepend BASE_URL
+                        profilePicUrl = `${BASE_URL}/${profilePicUrl.startsWith('/') ? profilePicUrl.slice(1) : profilePicUrl}`;
+                    }
+                    console.log(`Normalized profile picture URL for ${employee.emp_name}:`, profilePicUrl);
+                } else {
+                    profilePicUrl = null;
+                    console.log(`No valid profile picture URL for ${employee.emp_name}`);
+                }
 
                 // Create profile image container
                 const profileImageDiv = document.createElement('div');
                 profileImageDiv.className = 'profile-image';
-                
+
                 // Create initials div
                 const initialsDiv = document.createElement('div');
                 initialsDiv.className = 'profile-initials';
                 initialsDiv.textContent = getInitials(employee.emp_name);
+                initialsDiv.style.display = profilePicUrl ? 'none' : 'flex';
                 profileImageDiv.appendChild(initialsDiv);
 
                 // Add profile image if URL exists
@@ -1038,20 +1041,19 @@
                     const img = document.createElement('img');
                     img.src = profilePicUrl;
                     img.alt = employee.emp_name || 'Profile';
+                    img.crossOrigin = 'anonymous';
                     img.onload = () => {
                         console.log(`Image loaded successfully for ${employee.emp_name} at ${profilePicUrl}`);
-                        img.style.display = 'block';
                         initialsDiv.style.display = 'none';
+                        img.style.display = 'block';
                     };
-                    img.onerror = () => {
-                        console.error(`Failed to load image for ${employee.emp_name}: ${profilePicUrl}`);
-                        img.style.display = 'none';
+                    img.onerror = (err) => {
+                        console.error(`Failed to load image for ${employee.emp_name} at ${profilePicUrl}`, err);
                         initialsDiv.style.display = 'flex';
+                        img.style.display = 'none';
                     };
+                    img.style.display = 'block'; // Ensure image is visible if it loads
                     profileImageDiv.appendChild(img);
-                } else {
-                    console.log(`No profile picture URL provided for ${employee.emp_name}`);
-                    initialsDiv.style.display = 'flex'; // Ensure initials are shown if no image
                 }
 
                 card.innerHTML = `
@@ -1138,8 +1140,8 @@
             setTextContent('modalDob', formatDate(employee.emp_dob));
             setTextContent('modalGender', employee.emp_gender);
             setTextContent('modalMaritalStatus', employee.emp_marital_status);
-            setTextContent('modalAadhaar', maskSensitive(employee.emp_aadhaar));
-            setTextContent('modalPan', maskSensitive(employee.emp_pan));
+            setTextContent('modalAadhaar', employee.emp_aadhaar);
+            setTextContent('modalPan', employee.emp_pan);
             setTextContent('modalTermsAccepted', employee.emp_terms_accepted ? 'Yes' : 'No');
             setTextContent('modalJobRole', employee.emp_job_role);
             setTextContent('modalDepartment', employee.emp_department);
@@ -1155,7 +1157,7 @@
             setTextContent('modalState', employee.emp_state);
             setTextContent('modalZipcode', employee.emp_zipcode);
             setTextContent('modalBank', employee.emp_bank);
-            setTextContent('modalAccount', maskSensitive(employee.emp_account));
+            setTextContent('modalAccount', employee.emp_account);
             setTextContent('modalIfsc', employee.emp_ifsc);
             setTextContent('modalBankBranch', employee.emp_bank_branch);
             setTextContent('modalSscSchool', employee.ssc_school);
@@ -1277,7 +1279,7 @@
             if (documentsGrid) {
                 documentsGrid.innerHTML = '<div class="loading"><div class="spinner"></div>Loading documents...</div>';
                 try {
-                    const response = await fetch('http://localhost:3000/get-documents', {
+                    const response = await fetch(`${BASE_URL}/get-documents`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ empEmail: employee.emp_email })
@@ -1391,8 +1393,8 @@
                     ['Gender:', employee.emp_gender || 'N/A'],
                     ['Marital Status:', employee.emp_marital_status || 'N/A'],
                     ['DOB:', formatDate(employee.emp_dob)],
-                    ['Aadhaar:', maskSensitive(employee.emp_aadhaar)],
-                    ['PAN:', maskSensitive(employee.emp_pan)],
+                    ['Aadhaar:', employee.emp_aadhaar || 'N/A'],
+                    ['PAN:', employee.emp_pan || 'N/A'],
                     ['Terms Accepted:', employee.emp_terms_accepted ? 'Yes' : 'No']
                 ];
 
@@ -1472,7 +1474,7 @@
 
                 createFullWidthTable('Bank Details', [
                     ['Bank Name:', employee.emp_bank || 'N/A'],
-                    ['Account No:', maskSensitive(employee.emp_account) || 'N/A'],
+                    ['Account No:', employee.emp_account || 'N/A'],
                     ['IFSC Code:', employee.emp_ifsc || 'N/A'],
                     ['Branch:', employee.emp_bank_branch || 'N/A']
                 ]);
@@ -1545,7 +1547,7 @@
                 // Fetch documents for PDF
                 let documents = [];
                 try {
-                    const response = await fetch('http://localhost:3000/get-documents', {
+                    const response = await fetch(`${BASE_URL}/get-documents`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ empEmail: employee.emp_email })
