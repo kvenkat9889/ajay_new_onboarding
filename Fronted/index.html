@@ -395,7 +395,7 @@
                         </div>
                     </div>
                     <div class="form-col">
-                        <label for="emp_mobile" class="required">Mobile Number</label>
+                        <label for="emp_mobile" class="required">Mobile Number(+91)</label>
                         <div class="form-group">
                             <input type="text" id="emp_mobile" placeholder="Mobile Number" name="emp_mobile" required maxlength="10">
                             <div id="emp_mobile-error" class="validation-message"></div>
@@ -405,7 +405,7 @@
 
                 <div class="form-row">
                     <div class="form-col">
-                        <label for="emp_alt_mobile">Alternate Mobile Number</label>
+                        <label for="emp_alt_mobile">Alternate Mobile Number(+91)</label>
                         <div class="form-group">
                             <input type="text" id="emp_alt_mobile" placeholder="Alternative Mobile Number" name="emp_alt_mobile" maxlength="10">
                             <div id="emp_alt_mobile-error" class="validation-message"></div>
@@ -480,7 +480,7 @@
                     </div>
                   
                     <div class="form-col">
-                        <label for="primary_contact_mobile" class="required">Primary Contact Mobile</label>
+                        <label for="primary_contact_mobile" class="required">Primary Contact Mobile(+91)</label>
                         <div class="form-group">
                             <input type="tel" id="primary_contact_mobile" name="primary_contact_mobile" placeholder="Mobile Number" required maxlength="10">
                             <div id="primary_contact_mobile-error" class="validation-message"></div>
@@ -506,7 +506,7 @@
                         <label for="primary_contact_email">Email Address</label>
                         <div class="form-group">
                             <input type="email" id="primary_contact_email" name="primary_contact_email" placeholder="Email Address" minlength="5" maxlength="60">
-                            <div id="primary-contact-email-error" class="validation-message">Please enter a valid email address</div>
+                            <div id="primary_contact_email-error" class="validation-message">Please enter a valid email address</div>
                         </div>
                     </div>
                     
@@ -522,7 +522,7 @@
                         </div>
                     </div>
                     <div class="form-col">
-                        <label for="secondary_contact_mobile">Secondary Contact Mobile</label>
+                        <label for="secondary_contact_mobile">Secondary Contact Mobile(+91)</label>
                         <div class="form-group">
                             <input type="text" id="secondary_contact_mobile" name="secondary_contact_mobile" placeholder="Mobile Number" maxlength="10">
                             <div id="secondary_contact_mobile-error" class="validation-message"></div>
@@ -548,7 +548,7 @@
                         <label for="secondary_contact_email">Email Address</label>
                         <div class="form-group">
                             <input type="email" id="secondary_contact_email" name="secondary_contact_email" placeholder="Email Address" minlength="5" maxlength="60">
-                            <div id="secondary-contact-email-error" class="validation-message">Please enter a valid email address</div>
+                            <div id="secondary_contact_email-error" class="validation-message">Please enter a valid email address</div>
                         </div>
                     </div>
                 </div>
@@ -660,7 +660,7 @@
                         <label for="emp_bank_branch" class="required">Branch Location</label>
                         <div class="form-group">
                             <input type="text" id="emp_bank_branch" name="emp_bank_branch" placeholder="Branch Location" required minlength="3" maxlength="60">
-                            <div id="emp_bank-branch-error" class="validation-message">Please enter a valid branch location</div>
+                            <div id="emp_bank_branch-error" class="validation-message">Please enter a valid branch location</div>
                         </div>
                     </div>
                 </div>
@@ -727,7 +727,7 @@
                                 <option value="Fresher">Fresher</option>
                                 <option value="Experienced">Experienced</option>
                             </select>
-                            <div id="emp_exp-status-error" class="validation-message">Please select experience status</div>
+                            <div id="emp_exp_status-error" class="validation-message">Please select experience status</div>
                         </div>
                     </div>
                 </div>
@@ -742,14 +742,14 @@
                                     <label for="emp_company_name_1" class="required">Previous Company Name</label>
                                     <div class="form-group">
                                         <input type="text" id="emp_company_name_1" name="emp_company_name_1" placeholder="Previous Company Name" minlength="3" maxlength="60">
-                                        <div id="emp_company-error-1" class="validation-message">Company name must be 3-60 characters</div>
+                                        <div id="emp_company_name_1-error" class="validation-message">Company name must be 3-60 characters</div>
                                     </div>
                                 </div>
                                 <div class="form-col">
                                     <label for="emp_years_of_experience_1" class="required">Years of Experience</label>
                                     <div class="form-group">
-                                        <input type="number" id="emp_years_of_experience_1" name="emp_years_of_experience_1" placeholder="Years of Experience" min="1" max="40" step="0.1">
-                                        <div id="emp_exp-years-error-1" class="validation-message">Please enter valid years (1-40)</div>
+                                        <input type="number" id="emp_years_of_experience_1" name="emp_years_of_experience_1" placeholder="Years of Experience" min="1" max="40" step="0.01">
+                                        <div id="emp_years_of_experinece_1-error" class="validation-message">Please enter valid years (1-40)</div>
                                     </div>
                                 </div>
                             </div>
@@ -759,14 +759,14 @@
                                     <label for="emp_start_date_1" class="required">Start Date</label>
                                     <div class="form-group">
                                         <input type="date" id="emp_start_date_1" name="emp_start_date_1">
-                                        <div id="emp_start-date-error-1" class="validation-message">Start date must be after SSC completion</div>
+                                        <div id="emp_start_date_1-error-1" class="validation-message">Start date must be after SSC completion</div>
                                     </div>
                                 </div>
                                 <div class="form-col">
                                     <label for="emp_end_date_1" class="required">End Date</label>
                                     <div class="form-group">
                                         <input type="date" id="emp_end_date_1" name="emp_end_date_1">
-                                        <div id="emp_end-date-error-1" class="validation-message">End date must be after start date and not in the future</div>
+                                        <div id="emp_end_date_1-error" class="validation-message">End date must be after start date and not in the future</div>
                                     </div>
                                 </div>
                             </div>
@@ -832,7 +832,7 @@
                                 <label for="ssc_school" class="required">School Name</label>
                                 <div class="form-group">
                                     <input type="text" id="ssc_school" name="ssc_school" required minlength="3" maxlength="60">
-                                    <div id="ssc-school-error" class="validation-message">School name must be 3-60 characters</div>
+                                    <div id="ssc_school-error" class="validation-message">School name must be 3-60 characters</div>
                                 </div>
                             </div>
                             <div class="form-col">
@@ -882,7 +882,7 @@
                             <div class="form-col">
                                 <label for="inter_grade" class="required">Percentage/CGPA</label>
                                 <div class="form-group">
-                                    <input type="text" id="inter_grade" name="inter_grade" required minlength="1" maxlength="4">
+                                    <input type="text" id="inter_grade" name="inter_grade" required minlength="1" maxlength="6">
                                     <div id="inter_grade-error" class="validation-message">Percentage must be 4-100% or 4.0-10.0 for CGPA</div>
                                 </div>
                             </div>
@@ -928,7 +928,7 @@
                             <div class="form-col">
                                 <label for="grad_grade" class="required">Percentage/CGPA</label>
                                 <div class="form-group">
-                                    <input type="text" id="grad_grade" name="grad_grade" required minlength="1" maxlength="4">
+                                    <input type="text" id="grad_grade" name="grad_grade" required minlength="1" maxlength="6">
                                     <div id="grad_grade-error" class="validation-message">Percentage must be 4-100% or 4.0-10.0 for CGPA</div>
                                 </div>
                             </div>
@@ -1005,8 +1005,8 @@
             <div class="form-group checkbox-group">
                 <input type="checkbox" id="emp_terms_accepted" name="emp_terms_accepted" required>
                 <label for="emp_terms_accepted" class="required">I certify that the information provided in this form is true and complete to the best of my knowledge. I understand that any false statements or omissions may be grounds for termination of employment. I consent to the processing of my personal data for the purpose of employment and onboarding in accordance with the company's privacy policy.</label>
-                <div id="terms-error" class="validation-message">You must accept the terms and conditions</div>
             </div>
+            <div id="emp_terms_accepted-error" class="validation-message">You must accept the terms and conditions</div>
 
             <div class="form-group">
                 <button type="submit" id="submitBtn" class="btn btn-primary btn-block">Submit Onboarding</button>
@@ -1015,7 +1015,7 @@
     </div>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const SERVER_ENDPOINT = 'http://localhost:3000/save-employee';
+    const SERVER_ENDPOINT = 'http://3.84.202.40:8081/save-employee';
     const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
     const emailRegex = /^[a-zA-Z0-9]+([._-][a-zA-Z0-9]+)*@(gmail|outlook)\.(com|in|org|co)$/;
     const mobileRegex = /^[6789]\d{9}$/;
@@ -1023,11 +1023,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const cityRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
     const zipRegex = /^[1-9][0-9]{5}$/;
     const bankRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-    const accountRegex = /^(?!0+$)[0-9]{9,18}$/;
-    const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+    const accountRegex = /^[0-9]{9,18}$/;
+    const ifscRegex = /^[A-Z]{4}0[1-9A-Z][A-Z0-9]{5}$/;
     const bankBranchRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
     const companyRegex = /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/;
-    const expYearsRegex = /^(0\.[1-9]|[1-9]|[1-3][0-9]|40)(\.\d)?$/;
+    const expYearsRegex = /^\d+(\.\d)?$/;
     const uanRegex = /^\d{12}$/;
     const pfRegex = /^[A-Z0-9]{17}$/;
     const schoolRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
@@ -1038,6 +1038,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageRegex = /\.(jpg|jpeg|png)$/i;
     const aadhaarRegex = /^\d{12}$/;
     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    const gradeRegex = /^\d{1,2}(\.\d{1,2})?$/;
 
     const now = new Date();
     const indiaOffset = 330;
@@ -1075,9 +1076,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (value.slice(-1) === ' ' && value.slice(-2, -1) === ' ') {
                 value = value.slice(0, -1);
             }
-            value = value.replace(/[^A-Za-z ]/g, '')
-                        .replace(/^\s+/, '')
-                        .replace(/\s+/g, ' ');
+            value = value.replace(/[^A-Za-z\s]/g, '')
+                        .replace(/\s+/g, ' ')
+                        .trim();
         }
         value = value.substring(0, input.maxLength || 60);
         input.value = value;
@@ -1089,8 +1090,7 @@ document.addEventListener('DOMContentLoaded', function() {
         value = value.replace(/[^A-Za-z0-9\s,.\-\/#]/g, '')
                     .replace(/([.,\-\/#])\1+/g, '$1')
                     .replace(/\s+/g, ' ')
-                    .replace(/^\s+/, '')
-                    .replace(/\s+$/, '');
+                    .trim();
         value = value.substring(0, input.maxLength || 80);
         input.value = value;
         return value;
@@ -1122,112 +1122,56 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function cleanGradeInput(input) {
-    let value = input.value;
-    
-    // Remove all characters except digits, decimal point, and %
-    value = value.replace(/[^0-9.%]/g, '');
-    
-    // Handle percentage sign - only allow at the end
-    const hasPercentage = value.includes('%');
-    value = value.replace(/%/g, '');
-    
-    // Handle multiple decimal points
-    const parts = value.split('.');
-    if (parts.length > 2) {
-        value = parts[0] + '.' + parts[1];
-    } else if (parts.length === 2) {
-        // Limit to 2 decimal places
-        value = parts[0] + '.' + parts[1].slice(0, 2);
-    }
-    
-    // Remove leading zeros except for single zero before decimal
-    if (value.length > 1 && value[0] === '0' && value[1] !== '.') {
-        value = value.substring(1);
-    }
-    
-    // Parse the numeric value
-    const numericValue = parseFloat(value);
-    
-    if (!isNaN(numericValue)) {
-        // Determine if this is a percentage (>=10 or has % sign)
-        const isPercentage = numericValue >= 10 || hasPercentage;
-        
-        if (isPercentage) {
-            // Handle percentage values (4% to 100%)
-            if (numericValue > 100) {
-                value = '100';
-            } else if (numericValue < 4) {
-                value = '4';
-            } else {
-                // Format with 2 decimal places for percentages
-                value = numericValue.toFixed(2);
-            }
-            // Add % sign back if it was there or if value >=10
-            value += '%';
-        } else {
-            // Handle CGPA values (4.0 to 10.0)
-            if (numericValue > 10) {
-                value = '10.00';
-            } else if (numericValue < 4) {
-                value = '4.00';
-            } else {
-                // Format with 2 decimal places for CGPA
-                value = numericValue.toFixed(2);
-            }
+        let value = input.value.trim();
+        value = value.replace(/[^0-9.]/g, '');
+        if (value === '' || value === '.') {
+            input.value = value;
+            return value;
         }
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts[1];
+        } else if (parts.length === 2) {
+            value = parts[0] + '.' + parts[1].slice(0, 2);
+        }
+        if (value.length > 1 && value[0] === '0' && value[1] !== '.') {
+            value = value.substring(1);
+        }
+        input.value = value;
+        return value;
     }
-    
-    // Limit total length
-    value = value.substring(0, 6);
-    input.value = value;
-    return value;
-}
 
-function cleanExperienceYears(input) {
-    let value = input.value;
-    
-    // Remove all characters except digits and decimal point
-    value = value.replace(/[^0-9.]/g, '');
-    
-    // Handle multiple decimal points
-    const parts = value.split('.');
-    if (parts.length > 2) {
-        value = parts[0] + '.' + parts[1];
-    } else if (parts.length === 2) {
-        // Limit to 1 decimal place for experience years
-        value = parts[0] + '.' + parts[1].slice(0, 1);
-    }
-    
-    // Remove leading zeros except for single zero before decimal
-    if (value.length > 1 && value[0] === '0' && value[1] !== '.') {
-        value = value.substring(1);
-    }
-    
-    // Parse the numeric value
-    const numericValue = parseFloat(value);
-    
-    if (!isNaN(numericValue)) {
-        // Validate range (0.1 to 40)
-        if (numericValue > 40) {
-            value = '40';
-        } else if (numericValue < 0.1) {
-            value = '0.1';
-        } else if (numericValue < 1 && parts.length === 1) {
-            // If value is between 0.1 and 1 but user hasn't entered decimal
-            value = '0.1';
-        } else {
-            // Format with 1 decimal place if needed
-            if (parts.length === 2) {
-                value = numericValue.toFixed(1);
+    function cleanExperienceYears(input) {
+        let value = input.value.trim();
+        value = value.replace(/[^0-9.]/g, '');
+        if (value === '' || value === '.') {
+            input.value = value;
+            return value;
+        }
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts[1];
+        } else if (parts.length === 2) {
+            value = parts[0] + '.' + parts[1].slice(0, 1);
+        }
+        if (value.length > 1 && value[0] === '0' && value[1] !== '.') {
+            value = value.substring(1);
+        }
+        let numericValue = parseFloat(value);
+        if (!isNaN(numericValue)) {
+            if (numericValue > 40) {
+                value = '40.0';
+                numericValue = 40;
+            } else if (numericValue < 0.1) {
+                value = '0.1';
+                numericValue = 0.1;
             }
         }
+        value = value.substring(0, 5);
+        input.value = value;
+        return value;
     }
-    
-    // Limit total length
-    value = value.substring(0, 5);
-    input.value = value;
-    return value;
-}
+
     const experienceStatus = document.getElementById('emp_experience_status');
     const experienceFields = document.getElementById('experienceFields');
 
@@ -1298,7 +1242,7 @@ function cleanExperienceYears(input) {
                         <label for="emp_start_date_${index}" class="required">Start Date</label>
                         <div class="form-group">
                             <input type="date" id="emp_start_date_${index}" name="emp_start_date_${index}" required>
-                            <div id="emp_start-date-error-${index}" class="validation-message">Start date must be after SSC completion</div>
+                            <div id="emp_start-date-error-${index}" class="validation-message">Start date must be after SSC completion and one month from today</div>
                         </div>
                     </div>
                     <div class="form-col">
@@ -1444,7 +1388,7 @@ function cleanExperienceYears(input) {
                         <label for="extra_grade_${index}" class="required">Percentage/CGPA</label>
                         <div class="form-group">
                             <input type="text" id="extra_grade_${index}" name="extra_grade_${index}" required minlength="1" maxlength="6">
-                            <div id="extra-grade-error-${index}" class="validation-message">Percentage must be 4-100% or CGPA 4.0-10.0</div>
+                            <div id="extra-grade-error-${index}" class="validation-message">Must be between 4.00 and 100.00</div>
                         </div>
                     </div>
                 </div>
@@ -1541,27 +1485,72 @@ function cleanExperienceYears(input) {
     }
 
     function updateExperienceDateConstraints(index) {
-        const startDateInput = document.getElementById(`emp_start_date_${index}`);
-        const endDateInput = document.getElementById(`emp_end_date_${index}`);
-        const sscYear = document.getElementById('ssc_year').value;
+    const startDateInput = document.getElementById(`emp_start_date_${index}`);
+    const endDateInput = document.getElementById(`emp_end_date_${index}`);
+    const sscYear = document.getElementById('ssc_year').value;
 
-        if (startDateInput && endDateInput) {
-            if (sscYear && yearRegex.test(sscYear)) {
-                const minStartDate = new Date(parseInt(sscYear) + 1, 0, 1);
-                startDateInput.min = formatDateForInput(minStartDate);
+    if (startDateInput && endDateInput) {
+        // Calculate minimum start date (1 month from today or SSC completion +1 year, whichever is later)
+        const oneMonthFromNow = new Date(indiaNow);
+        oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
+        
+        let minStartDate = oneMonthFromNow;
+        
+        if (sscYear && yearRegex.test(sscYear)) {
+            const sscCompletionDate = new Date(parseInt(sscYear) + 1, 0, 1);
+            if (sscCompletionDate > minStartDate) {
+                minStartDate = sscCompletionDate;
             }
-            
-            endDateInput.max = formatDateForInput(indiaNow);
-            
-            if (index > 1) {
-                const prevEndDateInput = document.getElementById(`emp_end_date_${index - 1}`);
-                if (prevEndDateInput.value) {
-                    startDateInput.min = prevEndDateInput.value;
+        }
+
+        // Set start date constraints
+        startDateInput.min = formatDateForInput(minStartDate);
+        startDateInput.max = formatDateForInput(indiaNow); // Can't be in the future
+
+        // Set end date constraints
+        endDateInput.max = formatDateForInput(indiaNow); // Can't be in the future
+
+        // Update constraints when start date changes
+        startDateInput.addEventListener('change', function() {
+            if (startDateInput.value) {
+                const startDate = new Date(startDateInput.value);
+                const minEndDate = new Date(startDate);
+                minEndDate.setMonth(minEndDate.getMonth() + 1);
+                
+                // Set minimum end date to 1 month after start date
+                endDateInput.min = formatDateForInput(minEndDate);
+                
+                // Clear end date if it's now invalid
+                if (endDateInput.value && new Date(endDateInput.value) < minEndDate) {
+                    endDateInput.value = '';
+                    const errorElement = document.getElementById(`emp_end_date-error-${index}`);
+                    if (errorElement) {
+                        errorElement.classList.remove('visible');
+                        endDateInput.classList.remove('invalid');
+                    }
+                }
+            }
+        });
+
+        // For subsequent experiences, ensure start date is before previous end date
+        if (index > 1) {
+            const prevEndDateInput = document.getElementById(`emp_end_date_${index - 1}`);
+            if (prevEndDateInput && prevEndDateInput.value) {
+                startDateInput.max = prevEndDateInput.value;
+                
+                // If current start date is invalid, clear it
+                if (startDateInput.value && new Date(startDateInput.value) > new Date(prevEndDateInput.value)) {
+                    startDateInput.value = '';
+                    const errorElement = document.getElementById(`emp_start_date-error-${index}`);
+                    if (errorElement) {
+                        errorElement.classList.remove('visible');
+                        startDateInput.classList.remove('invalid');
+                    }
                 }
             }
         }
     }
-
+}
     function validateField(input) {
         const errorId = input.id.match(/_\d+$/) 
             ? `${input.id.replace(/_\d+$/, '')}-error${input.id.match(/_\d+$/)[0].replace('_', '-')}`
@@ -1595,7 +1584,6 @@ function cleanExperienceYears(input) {
                 case 'secondary_contact_mobile':
                     isValid = mobileRegex.test(input.value);
                     errorMessage = 'Please enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
-                    
                     if (isValid) {
                         const mobileNumbers = [
                             document.getElementById('emp_mobile').value,
@@ -1630,7 +1618,12 @@ function cleanExperienceYears(input) {
                     break;
                 case 'emp_aadhaar':
                     isValid = aadhaarRegex.test(input.value);
-                    errorMessage = 'Aadhaar must be exactly 12 digits';
+                    if (isValid && /^0+$/.test(input.value)) {
+                        isValid = false;
+                        errorMessage = 'Aadhaar number cannot be all zeros';
+                    } else if (!isValid) {
+                        errorMessage = 'Aadhaar must be exactly 12 digits';
+                    }
                     break;
                 case 'emp_pan':
                     isValid = panRegex.test(input.value);
@@ -1655,7 +1648,12 @@ function cleanExperienceYears(input) {
                     break;
                 case 'emp_account':
                     isValid = accountRegex.test(input.value);
-                    errorMessage = 'Account number must be 9-18 digits';
+                    if (isValid && /^0+$/.test(input.value)) {
+                        isValid = false;
+                        errorMessage = 'Account number cannot be all zeros';
+                    } else if (!isValid) {
+                        errorMessage = 'Account number must be 9-18 digits';
+                    }
                     break;
                 case 'emp_ifsc':
                     isValid = ifscRegex.test(input.value);
@@ -1677,55 +1675,86 @@ function cleanExperienceYears(input) {
                 case 'emp_years_of_experience_1':
                 case 'emp_years_of_experience_2':
                 case 'emp_years_of_experience_3':
-                const expValue = parseFloat(input.value);
-    isValid = !isNaN(expValue) && expValue >= 0.1 && expValue <= 40;
-    errorMessage = 'Please enter valid years (0.1-40) with max 1 decimal place';
+                    isValid = expYearsRegex.test(input.value);
+                    if (isValid) {
+                        const expValue = parseFloat(input.value);
+                        isValid = !isNaN(expValue) && expValue >= 0.1 && expValue <= 40;
+                        errorMessage = 'Please enter valid years (0.1-40, one decimal place)';
+                    } else {
+                        errorMessage = 'Invalid format. Use X or X.Y (e.g., 3 or 3.1)';
+                    }
+                    break;
+                    case 'emp_start_date_1':
+case 'emp_start_date_2':
+case 'emp_start_date_3':
+    if (input.value) {
+        const startDate = new Date(input.value);
+        const today = new Date(indiaNow);
+        const oneMonthFromNow = new Date(today);
+        oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
+        
+        // Must be at least one month from today
+        isValid = startDate >= oneMonthFromNow;
+        
+        // Must be after SSC completion if SSC year exists
+        const sscYear = document.getElementById('ssc_year').value;
+        if (sscYear && yearRegex.test(sscYear)) {
+            const minStartDate = new Date(parseInt(sscYear) + 1, 0, 1);
+            isValid = isValid && startDate >= minStartDate;
+        }
+        
+        // For subsequent experiences, must be before previous end date
+        const index = input.id.split('_').pop();
+        if (index > 1) {
+            const prevEndDateInput = document.getElementById(`emp_end_date_${index - 1}`);
+            if (prevEndDateInput && prevEndDateInput.value) {
+                isValid = isValid && startDate <= new Date(prevEndDateInput.value);
+            }
+        }
+        
+        errorMessage = 'Start date must be at least one month from today and after SSC completion';
+    }
     break;
-                case 'emp_start_date_1':
-                case 'emp_start_date_2':
-                case 'emp_start_date_3':
-                    const sscYear = document.getElementById('ssc_year').value;
-                    if (sscYear && yearRegex.test(sscYear)) {
-                        const minStart = new Date(parseInt(sscYear) + 1, 0, 1);
-                        const startDate = new Date(input.value);
-                        isValid = startDate >= minStart && startDate <= indiaNow;
-                        errorMessage = 'Start date must be after SSC completion and not in the future';
-                    }
-                    break;
-                case 'emp_end_date_1':
-                case 'emp_end_date_2':
-                case 'emp_end_date_3':
-                    const index = input.id.split('_').pop();
-                    const startDateInput = document.getElementById(`emp_start_date_${index}`);
-                    if (startDateInput.value) {
-                        const startDate = new Date(startDateInput.value);
-                        const endDate = new Date(input.value);
-                        const minEndDate = new Date(startDate);
-                        minEndDate.setMonth(minEndDate.getMonth() + 1);
-                        isValid = endDate >= minEndDate && endDate <= indiaNow;
-                        
-                        if (index > 1) {
-                            const nextStartDateInput = document.getElementById(`emp_start_date_${parseInt(index) + 1}`);
-                            if (nextStartDateInput && nextStartDateInput.value) {
-                                isValid = isValid && endDate <= new Date(nextStartDateInput.value);
-                                errorMessage = 'End date must be before next employment start date';
-                            }
-                        } else {
-                            errorMessage = 'End date must be at least 1 month after start date and not in the future';
-                        }
-                    }
-                    break;
+
+case 'emp_end_date_1':
+case 'emp_end_date_2':
+case 'emp_end_date_3':
+    if (input.value) {
+        const index = input.id.split('_').pop();
+        const startDateInput = document.getElementById(`emp_start_date_${index}`);
+        
+        if (startDateInput.value) {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(input.value);
+            const minEndDate = new Date(startDate);
+            minEndDate.setMonth(minEndDate.getMonth() + 1);
+            
+            isValid = endDate >= minEndDate && endDate <= new Date(indiaNow);
+            errorMessage = 'End date must be at least one month after start date and not in the future';
+        }
+    }
+    break;
                 case 'emp_uan_1':
                 case 'emp_uan_2':
                 case 'emp_uan_3':
                     isValid = uanRegex.test(input.value);
-                    errorMessage = 'UAN must be exactly 12 digits';
+                    if (isValid && /^0+$/.test(input.value)) {
+                        isValid = false;
+                        errorMessage = 'UAN number cannot be all zeros';
+                    } else if (!isValid) {
+                        errorMessage = 'UAN must be exactly 12 digits';
+                    }
                     break;
                 case 'emp_pf_1':
-                case 'emp_pf_2':
+                case 'epf_2':
                 case 'emp_pf_3':
                     isValid = pfRegex.test(input.value);
-                    errorMessage = 'PF number must be 17 alphanumeric characters';
+                    if (isValid && /^0+$/.test(input.value)) {
+                        isValid = false;
+                        errorMessage = 'PF number cannot be all zeros';
+                    } else if (!isValid) {
+                        errorMessage = 'PF number must be 17 alphanumeric characters';
+                    }
                     break;
                 case 'ssc_school':
                 case 'inter_college':
@@ -1736,16 +1765,16 @@ function cleanExperienceYears(input) {
                     errorMessage = 'Name must be 3-60 alphabetic characters with single spaces';
                     break;
                 case 'ssc_year':
-                    const dobYear = new Date(document.getElementById('emp_dob').value).getFullYear();
+                    const dobYear = document.getElementById('emp_dob').value ? new Date(document.getElementById('emp_dob').value).getFullYear() : 0;
                     isValid = yearRegex.test(input.value) && 
-                              parseInt(input.value) >= (dobYear + 12) && 
-                              parseInt(input.value) <= currentYear;
-                    errorMessage = `SSC year must be at least 12 years after birth (${dobYear + 12}-${currentYear})`;
+                            parseInt(input.value) >= (dobYear + 12) && 
+                            parseInt(input.value) <= currentYear;
+                    errorMessage = `SSC year must be at least 12 years after birth (${dobYear ? dobYear + 12 : 'unknown'}-${currentYear})`;
                     break;
                 case 'inter_year':
                     const sscYearVal = document.getElementById('ssc_year').value;
                     isValid = yearRegex.test(input.value) && 
-                              parseInt(input.value) <= currentYear;
+                            parseInt(input.value) <= currentYear;
                     if (sscYearVal && yearRegex.test(sscYearVal)) {
                         isValid = isValid && parseInt(input.value) >= (parseInt(sscYearVal) + 2);
                         errorMessage = `Year must be at least 2 years after SSC (${parseInt(sscYearVal) + 2}-${currentYear})`;
@@ -1754,7 +1783,7 @@ function cleanExperienceYears(input) {
                 case 'grad_year':
                     const interYearVal = document.getElementById('inter_year').value;
                     isValid = yearRegex.test(input.value) && 
-                              parseInt(input.value) <= (currentYear + 2);
+                            parseInt(input.value) <= (currentYear + 2);
                     if (interYearVal && yearRegex.test(interYearVal)) {
                         isValid = isValid && parseInt(input.value) >= (parseInt(interYearVal) + 3);
                         errorMessage = `Year must be at least 3 years after Intermediate (${parseInt(interYearVal) + 3}-${currentYear + 2})`;
@@ -1764,7 +1793,7 @@ function cleanExperienceYears(input) {
                 case 'extra_year_5':
                     const gradYearVal = document.getElementById('grad_year').value;
                     isValid = yearRegex.test(input.value) && 
-                              parseInt(input.value) <= (currentYear + 2);
+                            parseInt(input.value) <= (currentYear + 2);
                     if (gradYearVal && yearRegex.test(gradYearVal)) {
                         isValid = isValid && parseInt(input.value) >= parseInt(gradYearVal);
                         errorMessage = `Year must be after graduation (${gradYearVal}-${currentYear + 2})`;
@@ -1775,18 +1804,13 @@ function cleanExperienceYears(input) {
                 case 'grad_grade':
                 case 'extra_grade_4':
                 case 'extra_grade_5':
-                    let value = input.value.replace(/%/g, '');
-                    const numericValue = parseFloat(value);
-                    const isPercentage = numericValue >= 10 || input.value.includes('%');
-                    if (isPercentage) {
-                        isValid = numericValue >= 4 && numericValue <= 100;
-                        errorMessage = 'Percentage must be between 4% and 100%';
-                        if (isValid && !input.value.includes('%')) {
-                            input.value = numericValue + '%';
-                        }
+                    isValid = gradeRegex.test(input.value);
+                    if (isValid) {
+                        const numericValue = parseFloat(input.value);
+                        isValid = !isNaN(numericValue) && numericValue >= 4 && numericValue <= 100;
+                        errorMessage = 'Must be between 4.00 and 100.00';
                     } else {
-                        isValid = numericValue >= 4 && numericValue <= 10;
-                        errorMessage = 'CGPA must be between 4.0 and 10.0';
+                        errorMessage = 'Invalid format. Use X or X.YY (e.g., 75 or 75.25)';
                     }
                     break;
                 case 'inter_branch':
@@ -1794,16 +1818,16 @@ function cleanExperienceYears(input) {
                 case 'extra_branch_4':
                 case 'extra_branch_5':
                     isValid = branchRegex.test(input.value) && 
-                              input.value.length >= 3 && 
-                              input.value.length <= 30;
+                            input.value.length >= 3 && 
+                            input.value.length <= 30;
                     errorMessage = 'Branch must be 3-30 alphabetic characters with single spaces';
                     break;
                 case 'grad_degree':
                 case 'extra_degree_4':
                 case 'extra_degree_5':
                     isValid = degreeRegex.test(input.value) && 
-                              input.value.length >= 3 && 
-                              input.value.length <= 30;
+                            input.value.length >= 3 && 
+                            input.value.length <= 30;
                     errorMessage = 'Degree must be 3-30 alphabetic characters with single spaces';
                     break;
                 case 'emp_terms_accepted':
@@ -1830,10 +1854,10 @@ function cleanExperienceYears(input) {
         const errorId = `${input.id}-error`;
         const error = document.getElementById(errorId);
         if (!error) return true;
-    
+
         let isValid = true;
         let errorMessage = '';
-    
+
         if (input.required && !input.files.length) {
             isValid = false;
             errorMessage = `Please upload a ${input.labels[0].textContent.toLowerCase()}`;
@@ -1841,7 +1865,7 @@ function cleanExperienceYears(input) {
             const file = input.files[0];
             const fileSizeMB = file.size / (1024 * 1024);
             const fileExt = '.' + file.name.split('.').pop().toLowerCase();
-    
+
             if (!allowedTypes.includes(fileExt)) {
                 isValid = false;
                 errorMessage = `Only ${allowedTypes.join(', ')} files allowed`;
@@ -1850,7 +1874,7 @@ function cleanExperienceYears(input) {
                 errorMessage = `File size must not exceed ${maxSizeMB}MB`;
             }
         }
-    
+
         if (isValid) {
             input.classList.remove('invalid');
             input.classList.add('valid');
@@ -1863,51 +1887,51 @@ function cleanExperienceYears(input) {
         }
         return isValid;
     }
-    
+
     function validateSSCDoc() {
         return validateFileInput(document.getElementById('emp_ssc_doc'), ['.pdf'], 2);
     }
-    
+
     function validateInterDoc() {
         return validateFileInput(document.getElementById('emp_inter_doc'), ['.pdf'], 2);
     }
-    
+
     function validateGradDoc() {
         return validateFileInput(document.getElementById('emp_grad_doc'), ['.pdf'], 2);
     }
-    
+
     function validateExtraDoc(index) {
         return validateFileInput(document.getElementById(`emp_extra_doc_${index}`), ['.pdf'], 2);
     }
-    
+
     function validateProfilePic() {
         return validateFileInput(document.getElementById('emp_profile_pic'), ['.jpg', '.jpeg', '.png'], 2);
     }
-    
+
     function validateOfferLetter(index) {
         return validateFileInput(document.getElementById(`emp_offer_letter_${index}`), ['.pdf'], 2);
     }
-    
+
     function validateRelievingLetter(index) {
         return validateFileInput(document.getElementById(`emp_relieving_letter_${index}`), ['.pdf'], 2);
     }
-    
+
     function validateExperienceCert(index) {
         return validateFileInput(document.getElementById(`emp_experience_certificate_${index}`), ['.pdf'], 2);
     }
-    
+
     function validateResume() {
         return validateFileInput(document.getElementById('resume'), ['.pdf'], 2);
     }
-    
+
     function validateIdProof() {
         return validateFileInput(document.getElementById('id_proof'), ['.pdf', '.jpg', '.jpeg', '.png'], 2);
     }
-    
+
     function validateSignedDoc() {
         return validateFileInput(document.getElementById('signed_document'), ['.pdf'], 2);
     }
-    
+
     function addEventListenersForExperience(index) {
         const fields = [
             `emp_company_name_${index}`,
@@ -1945,7 +1969,7 @@ function cleanExperienceYears(input) {
             }
         });
     }
-    
+
     function addEventListenersForEducation(index) {
         const fields = [
             `extra_college_${index}`,
@@ -1967,8 +1991,7 @@ function cleanExperienceYears(input) {
             }
         });
     }
-    
-    // Add event listeners for static fields
+
     const inputFields = document.querySelectorAll('input:not([type="file"]), select');
     inputFields.forEach(input => {
         if (input.type === 'checkbox') {
@@ -1995,13 +2018,12 @@ function cleanExperienceYears(input) {
             input.addEventListener('blur', () => validateField(input));
         }
     });
-    
-    // Add event listeners for file inputs
+
     const fileInputs = document.querySelectorAll('input[type="file"]');
     fileInputs.forEach(input => {
         input.addEventListener('change', () => {
             switch(input.id) {
-                case 'emp_ssc_doc': validateSSCDoc(); break;
+                case 'emp_ssc_doc': Number.MAX_VALUEidateSSCDoc(); break;
                 case 'emp_inter_doc': validateInterDoc(); break;
                 case 'emp_grad_doc': validateGradDoc(); break;
                 case 'emp_profile_pic': validateProfilePic(); break;
@@ -2022,7 +2044,6 @@ function cleanExperienceYears(input) {
         });
     });
 
-    // Function to display server errors in the error summary
     function displayServerErrors(errors) {
         const errorSummary = document.getElementById('errorSummary');
         const errorList = document.getElementById('errorList');
@@ -2035,8 +2056,7 @@ function cleanExperienceYears(input) {
         });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
-    // Form submission
+
     const form = document.getElementById('onboardingForm');
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
@@ -2044,11 +2064,10 @@ function cleanExperienceYears(input) {
         const errorList = document.getElementById('errorList');
         errorList.innerHTML = '';
         errorSummary.classList.remove('visible');
-    
+
         let allValid = true;
         const errors = [];
-    
-        // Validate all non-file inputs
+
         const inputs = form.querySelectorAll('input:not([type="file"]), select');
         inputs.forEach(input => {
             if (!validateField(input)) {
@@ -2056,8 +2075,7 @@ function cleanExperienceYears(input) {
                 errors.push(`${input.labels[0]?.textContent || input.id} is invalid`);
             }
         });
-    
-        // Validate all file inputs
+
         const files = form.querySelectorAll('input[type="file"]');
         files.forEach(input => {
             let fileValid = true;
@@ -2085,7 +2103,7 @@ function cleanExperienceYears(input) {
                 errors.push(`${input.labels[0]?.textContent || input.id} is invalid`);
             }
         });
-    
+
         if (!allValid) {
             errorSummary.classList.add('visible');
             errors.forEach(error => {
@@ -2096,72 +2114,67 @@ function cleanExperienceYears(input) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
-    
+
         const formData = new FormData(form);
         try {
             const response = await fetch(SERVER_ENDPOINT, {
                 method: 'POST',
                 body: formData
             });
-            
+
             const result = await response.json();
             console.log('Server response:', result);
             if (response.ok) {
-    alert('Onboarding form submitted successfully!');
-    form.reset();
-    toggleExperienceFields();
-    experienceContainer.innerHTML = initialExperienceHTML;
-    educationContainer.innerHTML = initialEducationHTML;
-    experienceCount = 1;
-    educationCount = 3;
-    addExperienceBtn.disabled = false;
-    addEducationBtn.disabled = true;
-} else {
-    const errorMessages = [];
-    
-    // Check for duplicate Aadhaar
-    if (result.error.includes('Aadhaar already exists')) {
-        const aadhaarInput = document.getElementById('emp_aadhaar');
-        const errorElement = document.getElementById('emp_aadhaar-error');
-        aadhaarInput.classList.add('invalid');
-        aadhaarInput.classList.remove('valid');
-        errorElement.textContent = 'This Aadhaar number is already registered';
-        errorElement.classList.add('visible');
-        errorMessages.push('This Aadhaar number is already registered');
-    }
-    
-    // Check for duplicate PAN
-    if (result.error.includes('PAN already exists')) {
-        const panInput = document.getElementById('emp_pan');
-        const errorElement = document.getElementById('emp_pan-error');
-        panInput.classList.add('invalid');
-        panInput.classList.remove('valid');
-        errorElement.textContent = 'This PAN number is already registered';
-        errorElement.classList.add('visible');
-        errorMessages.push('This PAN number is already registered');
-    }
-    
-    // Check for duplicate Email
-    if (result.error.includes('Email already exists')) {
-        const emailInput = document.getElementById('emp_email');
-        const errorElement = document.getElementById('emp_email-error');
-        emailInput.classList.add('invalid');
-        emailInput.classList.remove('valid');
-        errorElement.textContent = 'This email is already registered';
-        errorElement.classList.add('visible');
-        errorMessages.push('This email is already registered');
-    }
-    
-    // Add any other errors
-    if (result.error && !errorMessages.length) {
-        errorMessages.push(result.error);
-    }
-    
-    // Display all errors at once
-    if (errorMessages.length) {
-        displayServerErrors(errorMessages);
-    }
-}
+                alert('Form submitted successfully! Your onboarding details have been recorded.');
+                form.reset();
+                toggleExperienceFields();
+                experienceContainer.innerHTML = initialExperienceHTML;
+                educationContainer.innerHTML = initialEducationHTML;
+                experienceCount = 1;
+                educationCount = 3;
+                addExperienceBtn.disabled = false;
+                addEducationBtn.disabled = true;
+            } else {
+                const errorMessages = [];
+
+                if (result.error.includes('Aadhaar already exists')) {
+                    const aadhaarInput = document.getElementById('emp_aadhaar');
+                    const errorElement = document.getElementById('emp_aadhaar-error');
+                    aadhaarInput.classList.add('invalid');
+                    aadhaarInput.classList.remove('valid');
+                    errorElement.textContent = 'This Aadhaar number is already registered';
+                    errorElement.classList.add('visible');
+                    errorMessages.push('This Aadhaar number is already registered');
+                }
+
+                if (result.error.includes('PAN already exists')) {
+                    const panInput = document.getElementById('emp_pan');
+                    const errorElement = document.getElementById('emp_pan-error');
+                    panInput.classList.add('invalid');
+                    panInput.classList.remove('valid');
+                    errorElement.textContent = 'This PAN number is already registered';
+                    errorElement.classList.add('visible');
+                    errorMessages.push('This PAN number is already registered');
+                }
+
+                if (result.error.includes('Email already exists')) {
+                    const emailInput = document.getElementById('emp_email');
+                    const errorElement = document.getElementById('emp_email-error');
+                    emailInput.classList.add('invalid');
+                    emailInput.classList.remove('valid');
+                    errorElement.textContent = 'This email is already registered';
+                    errorElement.classList.add('visible');
+                    errorMessages.push('This email is already registered');
+                }
+
+                if (result.error && !errorMessages.length) {
+                    errorMessages.push(result.error);
+                }
+
+                if (errorMessages.length) {
+                    displayServerErrors(errorMessages);
+                }
+            }
         } catch (error) {
             console.error('Error submitting form:', error);
             displayServerErrors(['An error occurred while submitting the form.']);

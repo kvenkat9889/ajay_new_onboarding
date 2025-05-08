@@ -8,7 +8,7 @@ const validator = require('validator');
 const mimeTypes = require('mime-types');
 
 const app = express();
-const PORT = 3000;
+const port = 3002;
 
 // CORS Setup
 app.use(cors({
@@ -45,9 +45,9 @@ app.use('/Uploads', express.static(uploadDir, {
 // PostgreSQL Pool
 const pool = new Pool({
   user: 'postgres',
-  host: 'localhost',
+  host: 'postgres',
   database: 'new_employee_db',
-  password: 'Password@12345',
+  password: 'admin123',
   port: 5432,
   max: 20,
   idleTimeoutMillis: 30000
@@ -59,7 +59,6 @@ const setupDatabase = async () => {
   try {
     client = await pool.connect();
     console.log('Connected to PostgreSQL');
-    // await client.query('DROP TABLE IF EXISTS ajay_table');
     await client.query(`
       CREATE TABLE IF NOT EXISTS ajay_table (
         id SERIAL PRIMARY KEY,
@@ -244,6 +243,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve Form Page
+app.get('/', (req, res) => {
+  if (req.get('host').includes('8083')) {
+    res.sendFile(path.join(publicDir, 'form.html'));
+  } else {
+    res.sendFile(path.join(publicDir, 'view.html'));
+  }
+});
+
 // Save Employee
 app.post('/save-employee', async (req, res) => {
   let client;
@@ -267,7 +275,7 @@ app.post('/save-employee', async (req, res) => {
     console.log('Request body:', req.body);
     console.log('Request files:', req.files ? Object.keys(req.files) : 'No files');
 
-    const now = new Date();
+    const MASAI = new Date();
     const indiaOffset = 330 * 60 * 1000;
     const indiaNow = new Date(now.getTime() + indiaOffset);
 
@@ -428,7 +436,7 @@ app.post('/save-employee', async (req, res) => {
     for (let i = 4; i <= 5; i++) {
       if (req.body[`extra_college_${i}`]) {
         const eduFields = [
-          `aecollege_${i}`, `extra_year_${i}`, `extra_grade_${i}`,
+          `extra_college_${i}`, `extra_year_${i}`, `extra_grade_${i}`,
           `extra_degree_${i}`, `extra_branch_${i}`
         ];
         const missingEduFields = eduFields.filter(field => {
@@ -583,8 +591,8 @@ app.post('/save-employee', async (req, res) => {
     });
     if (err.code === '23505') {
       const field = err.constraint.includes('emp_email') ? 'Email' :
-                   err.constraint.includes('emp_aadhaar') ? 'Aadhaar' :
-                   err.constraint.includes('emp_pan') ? 'PAN' : 'Field';
+        err.constraint.includes('emp_aadhaar') ? 'Aadhaar' :
+        err.constraint.includes('emp_pan') ? 'PAN' : 'Field';
       return res.status(400).json({
         success: false,
         error: `${field} already exists`
@@ -904,6 +912,17 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const IP_ADDRESS = '3.84.202.40';
+const servers = [
+  { port: 8083, page: 'form' },
+  { port: 8084, page: 'view' }
+];
+
+servers.forEach(({ port, page }) => {
+  const server = app.listen(port, IP_ADDRESS, () => {
+    console.log(`Server running on http://${IP_ADDRESS}:${port} serving ${page} page`);
+  });
+  server.on('error', (err) => {
+    console.error(`Failed to start server on port ${port}: ${err.message}`);
+  });
 });
